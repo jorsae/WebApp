@@ -7,14 +7,9 @@ namespace WebApp.Models
 {
     public class Survey
     {
-        private int surveyId;
-        public int SurveyId { get => surveyId; set => surveyId = value; }
-
-        private int userId;
-        public int UserId { get => userId; set => userId = value; }
-
-        private DateTime creationDate;
-        public DateTime CreationDate { get => creationDate; set => creationDate = value; }
+        public int SurveyId { get; set; }
+        public int UserId { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public virtual ICollection<SurveyQuestion> SurveyQuestions { get; set; } = new List<SurveyQuestion>();
 
