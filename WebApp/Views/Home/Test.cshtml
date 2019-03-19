@@ -3,4 +3,9 @@
 }
 <h1>Test</h1>
 
+<form action="@Url.Action("Result", "Home")" method="post">
+    Get survey with id: <input type="number" name="id" />
+    <input type="submit" value="Go!" />
+</form>
+
 @ViewBag.survey

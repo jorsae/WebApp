@@ -37,5 +37,18 @@ namespace WebApp.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Result()
+        {
+            var keys = Request.Form.AllKeys;
+            var idKey = Request.Form.Get(keys[0]);
+
+            int.TryParse(idKey.ToString(), out int id);
+            if(id >= 0)
+                ViewBag.result = await surveyApi.GetSurvey(id);
+
+            return View();
+        }
     }
 }
