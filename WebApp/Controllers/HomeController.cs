@@ -44,7 +44,8 @@ namespace WebApp.Controllers
             var keys = Request.Form.AllKeys;
             var idKey = Request.Form.Get(keys[0]);
 
-            int.TryParse(idKey.ToString(), out int id);
+            int id;
+            int.TryParse(idKey.ToString(), out id);
             if(id >= 0)
                 ViewBag.result = await surveyApi.GetSurvey(id);
 
