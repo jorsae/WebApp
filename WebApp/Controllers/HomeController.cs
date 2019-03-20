@@ -35,8 +35,6 @@ namespace WebApp.Controllers
 
         public async Task<ActionResult> Test()
         {
-
-
             // <h4>All questions to survey id: 2</h4>
             List< SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveysQuestions(2);
             foreach(SurveyQuestion surveyQuestion in surveyQuestions)
@@ -50,6 +48,13 @@ namespace WebApp.Controllers
             // < h4 > Answer surveyId1, question:1 </ h4 >
             List<SurveyQuestion> surveyQuestion1 = await surveyQuestionApi.GetSurveysQuestions(1);
             ViewBag.question = surveyQuestion1[0].Question;
+
+            //< h4 > All Answers to question 2 </ h4 >
+            List<SurveyAnswer> surveyAnswers = await surveyAnswerApi.GetSurveyAnswers(2);
+            foreach(SurveyAnswer surveyAnswer in surveyAnswers)
+            {
+                ViewBag.answers += surveyAnswer + "<br />";
+            }
 
             return View();
         }

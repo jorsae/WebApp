@@ -24,6 +24,18 @@ namespace WebApp.Models
             return null;
         }
 
+        public async Task<List<SurveyAnswer>> GetSurveyAnswers(int surveyQuestionId)
+        {
+            string url = $"{Baseurl}/question/{surveyQuestionId}";
+
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<List<SurveyAnswer>>();
+            }
+            return null;
+        }
+
         public async Task<bool> PutSurveyAnswer(int surveyQuestionId, int userAnswer)
         {
             SurveyAnswer answer = new SurveyAnswer(userAnswer, surveyQuestionId);
