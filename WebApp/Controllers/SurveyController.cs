@@ -9,6 +9,8 @@ namespace WebApp.Controllers
     public class SurveyController : Controller
     {
         private SurveyQuestionApi surveyQuestionapi = new SurveyQuestionApi();
+        private SurveyAnswerApi surveyAnswerApi = new SurveyAnswerApi();
+
         // GET: Survey
         public ActionResult Index()
         {
@@ -25,8 +27,33 @@ namespace WebApp.Controllers
             return View(surveyQuestions);
         }
 
-        public ActionResult FinishSurvey()
+        [HttpPost]
+        public async Task<ActionResult> FinishSurvey(FormCollection collection)
         {
+            string prefix = "surveyQuestionId-";
+            string result = "";
+            foreach(string property in collection)
+            {
+                if (property.Contains(prefix))
+                {
+                    bool questionParsed = int.TryParse(property.Replace(prefix, ""), out int questionId);
+                    bool answerParsed = int.TryParse(Request.Form[property], out int answer);
+                    if (questionParsed && answerParsed)
+                    {
+                        bool insertedAnswer = await surveyAnswerApi.PutSurveyAnswer(questionId, answer);
+                        if(insertedAnswer)
+                            result += $"{property} answer saved <br />";
+                        else
+                            result += $"{property} failed to save answer <br />";
+                    }
+                    else
+                    {
+                        result += $"{property} Something went wrong, could not get questionId and/or answer";
+                    }
+                }
+            }
+
+            ViewBag.result = result;
             return View();
         }
     }
