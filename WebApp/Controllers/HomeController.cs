@@ -33,8 +33,6 @@ namespace WebApp.Controllers
 
         public async Task<ActionResult> Test()
         {
-            ViewBag.survey = await surveyApi.GetSurvey(1);
-
             return View();
         }
 
