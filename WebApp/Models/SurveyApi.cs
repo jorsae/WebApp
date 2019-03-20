@@ -25,5 +25,15 @@ namespace WebApp.Models
             }
             return survey;
         }
+
+        public async Task<List<Survey>> GetSurveys()
+        {
+            HttpResponseMessage response = await client.GetAsync(Baseurl);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<List<Survey>>();
+            }
+            return null;
+        }
     }
 }

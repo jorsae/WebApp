@@ -23,3 +23,16 @@
 
 <h4>All Answers to question 2</h4>
 @Html.Raw(@ViewBag.answers)
+
+
+<h4>All surveys</h4>
+@using(Html.BeginForm("AnswerSurvey", "Survey", FormMethod.Post))
+{
+    <select>
+    @for(int i = 0; i < ViewBag.surveyCount; i++)
+    {
+        <option value=@i name=@i>@i</option>
+    }
+    </select>
+    <input type="submit" value="Go!" />
+}
