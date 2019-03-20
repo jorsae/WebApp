@@ -13,3 +13,10 @@
 
 <h4>Answer with answerId: 6</h4>
 @ViewBag.surveyAnswer
+
+<h4>Answer question 2</h4>
+@ViewBag.question
+<form action="@Url.Action("AnswerTest", "Home")" method="post">
+    <input type="number" name="answer" />
+    <input type="submit" value="Go!" />
+</form>
