@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         {
             List<SurveyQuestion> surveyQuestions = await surveyQuestionapi.GetSurveysQuestions(surveyId);
 
-            ViewBag.test = surveyQuestions.Count;
+            ViewBag.surveyId = surveyQuestions.Count;
 
             return View(surveyQuestions);
         }
