@@ -36,8 +36,9 @@ namespace WebApp.Controllers
             {
                 if (property.Contains(prefix))
                 {
-                    bool questionParsed = int.TryParse(property.Replace(prefix, ""), out int questionId);
-                    bool answerParsed = int.TryParse(Request.Form[property], out int answer);
+                    int questionId, answer;
+                    bool questionParsed = int.TryParse(property.Replace(prefix, ""), out questionId);
+                    bool answerParsed = int.TryParse(Request.Form[property], out answer);
                     if (questionParsed && answerParsed)
                     {
                         bool insertedAnswer = await surveyAnswerApi.PutSurveyAnswer(questionId, answer);
