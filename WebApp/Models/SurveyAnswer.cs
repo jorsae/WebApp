@@ -17,5 +17,10 @@
             Answer = answer;
             SurveyQuestionId = surveyQuestionId;
         }
+
+        public override string ToString()
+        {
+            return $"SurveyAnswerId:{SurveyAnswerId}, Answer:{Answer}, SurveyQuestionId:{SurveyQuestionId}";
+        }
     }
 }

@@ -25,5 +25,10 @@ namespace WebApp.Models
             QuestionNumber = questionNumber;
             Question = question;
         }
+
+        public override string ToString()
+        {
+            return $"SurveyQuestionId:{SurveyQuestionId}, Question:{Question}, QuestionNumber:{QuestionNumber}, SurveyId:{SurveyId}";
+        }
     }
 }

@@ -7,3 +7,9 @@
     Get survey with id: <input type="number" name="id" />
     <input type="submit" value="Go!" />
 </form>
+
+<h4>All questions to survey id: 2</h4>
+@Html.Raw(@ViewBag.surveyQuestion)
+
+<h4>Answer with answerId: 6</h4>
+@ViewBag.surveyAnswer

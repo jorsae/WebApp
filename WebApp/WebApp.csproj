@@ -141,8 +141,10 @@
     </Compile>
     <Compile Include="Models\Survey.cs" />
     <Compile Include="Models\SurveyAnswer.cs" />
+    <Compile Include="Models\SurveyAnswerApi.cs" />
     <Compile Include="Models\SurveyApi.cs" />
     <Compile Include="Models\SurveyQuestion.cs" />
+    <Compile Include="Models\SurveyQuestionApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

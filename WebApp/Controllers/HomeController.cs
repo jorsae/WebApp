@@ -11,6 +11,8 @@ namespace WebApp.Controllers
     public class HomeController : Controller
     {
         private SurveyApi surveyApi = new SurveyApi();
+        private SurveyQuestionApi surveyQuestionApi = new SurveyQuestionApi();
+        private SurveyAnswerApi surveyAnswerApi = new SurveyAnswerApi();
 
         public ActionResult Index()
         {
@@ -33,6 +35,14 @@ namespace WebApp.Controllers
 
         public async Task<ActionResult> Test()
         {
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveysQuestions(2);
+            foreach(SurveyQuestion surveyQuestion in surveyQuestions)
+            {
+                ViewBag.surveyQuestion += surveyQuestion.ToString() + "<br />";
+            }
+
+            ViewBag.surveyAnswer = await surveyAnswerApi.GetSurveyAnswer(6);
+
             return View();
         }
 

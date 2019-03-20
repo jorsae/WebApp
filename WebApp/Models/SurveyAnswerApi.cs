@@ -7,23 +7,21 @@ using System.Web;
 
 namespace WebApp.Models
 {
-    public class SurveyApi
+    public class SurveyAnswerApi
     {
         private HttpClient client = new HttpClient();
-        private const string Baseurl = "https://bo19webapi.azurewebsites.net/api/survey";
+        private const string Baseurl = "https://bo19webapi.azurewebsites.net/api/surveyanswer";
 
-        public async Task<Survey> GetSurvey(int surveyId)
+        public async Task<SurveyAnswer> GetSurveyAnswer(int surveyAnswerId)
         {
-            string url = $"{Baseurl}/{surveyId}";
-
-            Survey survey = null;
+            string url = $"{Baseurl}/{surveyAnswerId}";
 
             HttpResponseMessage response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                survey = await response.Content.ReadAsAsync<Survey>();
+                return await response.Content.ReadAsAsync<SurveyAnswer>();
             }
-            return survey;
+            return null;
         }
     }
 }
