@@ -58,9 +58,7 @@ namespace WebApp.Controllers
 
             // <h4>All surveys</h4>
             List<Survey> surveys = await surveyApi.GetSurveys();
-            ViewBag.surveyCount = surveys.Count;
-
-            return View();
+            return View(surveys);
         }
 
         [HttpPost]

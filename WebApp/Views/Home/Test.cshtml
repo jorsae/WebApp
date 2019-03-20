@@ -1,6 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using WebApp.Models
+
 <h1>Test</h1>
 
 <form action="@Url.Action("Result", "Home")" method="post">
@@ -26,13 +28,15 @@
 
 
 <h4>All surveys</h4>
-@using(Html.BeginForm("AnswerSurvey", "Survey", FormMethod.Post))
+@model List<Survey>
+@using (Html.BeginForm("AnswerSurvey", "Survey", FormMethod.Post))
 {
-    <select>
-    @for(int i = 0; i < ViewBag.surveyCount; i++)
-    {
-        <option value=@i name=@i>@i</option>
-    }
-    </select>
-    <input type="submit" value="Go!" />
+    <input list="numbers" name="surveyId" />
+    <datalist id="numbers">
+        @foreach(var element in Model)
+        {
+            <option value=@element.SurveyId >@element.SurveyId</option>
+        }
+    </datalist>
+    <input type="submit" value="go!" />
 }
