@@ -48,7 +48,7 @@ namespace WebApp.Models
         public async Task<bool> DeleteSurvey(int id)
         {
             string url = $"{Baseurl}/{id}";
-            HttpResponseMessage response = await client.GetAsync(url);
+            HttpResponseMessage response = await client.DeleteAsync(url);
             if (response.IsSuccessStatusCode)
                 return true;
             else

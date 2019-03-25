@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -128,11 +129,13 @@ namespace WebApp.Controllers
         // GET: Surveys/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
+            Debug.WriteLine(id);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Survey survey = await surveyApi.GetSurvey((int)id);
+            Debug.WriteLine(survey);
             if (survey == null)
             {
                 return HttpNotFound();
@@ -154,6 +157,7 @@ namespace WebApp.Controllers
             // Failed to delete survey
             else
             {
+                Console.WriteLine("Did not delete survey");
                 return RedirectToAction("Index");
             }
         }
