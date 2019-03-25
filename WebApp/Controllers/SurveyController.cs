@@ -14,9 +14,11 @@ namespace WebApp.Controllers
         private SurveyApi surveyApi = new SurveyApi();
 
         // GET: Survey
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            List<Survey> surveys = await surveyApi.GetSurveys();
+
+            return View(surveys);
         }
 
         [HttpPost]

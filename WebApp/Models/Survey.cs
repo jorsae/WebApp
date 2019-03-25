@@ -9,6 +9,7 @@ namespace WebApp.Models
     {
         public int SurveyId { get; set; }
         public int UserId { get; set; }
+        public string SurveyTitle { get; set; }
         public DateTime CreationDate { get; set; }
 
         public virtual ICollection<SurveyQuestion> SurveyQuestions { get; set; } = new List<SurveyQuestion>();
