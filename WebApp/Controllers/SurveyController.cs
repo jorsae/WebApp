@@ -22,7 +22,7 @@ namespace WebApp.Controllers
             return View(surveys);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> AnswerSurvey(int surveyId)
         {
             List<SurveyQuestion> surveyQuestions = await surveyQuestionapi.GetSurveysQuestions(surveyId);

@@ -29,7 +29,7 @@
 
 <h4>Answer a survey</h4>
 @model List<Survey>
-@using (Html.BeginForm("AnswerSurvey", "Survey", FormMethod.Post))
+@using (Html.BeginForm("AnswerSurvey", "Survey", FormMethod.Get))
 {
     <input list="numbers" name="surveyId" />
     <datalist id="numbers">
