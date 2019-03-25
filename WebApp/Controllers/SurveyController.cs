@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApp.Models;
@@ -10,6 +11,7 @@ namespace WebApp.Controllers
     {
         private SurveyQuestionApi surveyQuestionapi = new SurveyQuestionApi();
         private SurveyAnswerApi surveyAnswerApi = new SurveyAnswerApi();
+        private SurveyApi surveyApi = new SurveyApi();
 
         // GET: Survey
         public ActionResult Index()
@@ -59,17 +61,9 @@ namespace WebApp.Controllers
         }
 
         // GET: Surveys/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Survey survey = db.Surveys.Find(id);
-            if (survey == null)
-            {
-                return HttpNotFound();
-            }
+            Survey survey = await surveyApi.GetSurvey(id);
             return View(survey);
         }
 
@@ -82,21 +76,25 @@ namespace WebApp.Controllers
         // POST: Surveys/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
+        public async Task<ActionResult> Create([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
         {
-            if (ModelState.IsValid)
+            bool createdSurvey = await surveyApi.PutSurvey(survey);
+            // Survey was created successfully in database
+            if (createdSurvey)
             {
-                db.Surveys.Add(survey);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return View(survey);
             }
-
-            return View(survey);
+            // Failed to add survey to database
+            else
+            {
+                return View(survey);
+            }
         }
 
         // GET: Surveys/Edit/5
         public ActionResult Edit(int? id)
         {
+            /*
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -106,7 +104,8 @@ namespace WebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View(survey);
+            return View(survey);*/
+            return View();
         }
 
         // POST: Surveys/Edit/5
@@ -114,23 +113,24 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
         {
+            /*
             if (ModelState.IsValid)
             {
                 db.Entry(survey).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }
+            }*/
             return View(survey);
         }
 
         // GET: Surveys/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Survey survey = db.Surveys.Find(id);
+            Survey survey = await surveyApi.GetSurvey((int)id);
             if (survey == null)
             {
                 return HttpNotFound();
@@ -141,12 +141,19 @@ namespace WebApp.Controllers
         // POST: Surveys/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Survey survey = db.Surveys.Find(id);
-            db.Surveys.Remove(survey);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            bool deletedSurvey = await surveyApi.DeleteSurvey(id);
+            // Deleted survey successfully
+            if (deletedSurvey)
+            {
+                return RedirectToAction("Index");
+            }
+            // Failed to delete survey
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
     }
 }

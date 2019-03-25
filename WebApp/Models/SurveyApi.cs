@@ -35,5 +35,24 @@ namespace WebApp.Models
             }
             return null;
         }
+
+        public async Task<bool> PutSurvey(Survey survey)
+        {
+            HttpResponseMessage response = await client.PutAsJsonAsync<Survey>(Baseurl, survey);
+            if (response.IsSuccessStatusCode)
+                return true;
+            else
+                return false;
+        }
+
+        public async Task<bool> DeleteSurvey(int id)
+        {
+            string url = $"{Baseurl}/{id}";
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+                return true;
+            else
+                return false;
+        }
     }
 }
