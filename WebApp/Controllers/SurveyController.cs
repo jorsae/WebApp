@@ -25,9 +25,11 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> AnswerSurvey(int surveyId)
         {
+            Survey survey = await surveyApi.GetSurvey(surveyId);
             List<SurveyQuestion> surveyQuestions = await surveyQuestionapi.GetSurveysQuestions(surveyId);
 
             ViewBag.surveyId = surveyQuestions.Count;
+            ViewBag.surveyTitle = survey.SurveyTitle;
 
             return View(surveyQuestions);
         }
