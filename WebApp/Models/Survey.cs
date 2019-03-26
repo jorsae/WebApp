@@ -8,7 +8,6 @@ namespace WebApp.Models
     public class Survey
     {
         public int SurveyId { get; set; }
-        public int UserId { get; set; }
         public string SurveyTitle { get; set; }
         public DateTime CreationDate { get; set; }
 
@@ -22,16 +21,16 @@ namespace WebApp.Models
 
         }
 
-        public Survey(int userId)
+        public Survey(string surveyTitle)
         {
+            SurveyTitle = surveyTitle;
             SurveyId = NumberOfSurveys++;
-            UserId = userId;
             CreationDate = DateTime.Now;
         }
 
         public override string ToString()
         {
-            return $"SurveyId:{SurveyId}, UserId:{UserId}, CreationDate:{CreationDate}";
+            return $"SurveyId:{SurveyId}, SurveyTitle:{SurveyTitle}, CreationDate:{CreationDate}";
         }
     }
 }
