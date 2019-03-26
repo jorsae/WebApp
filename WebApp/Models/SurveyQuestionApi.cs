@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -20,6 +21,17 @@ namespace WebApp.Models
                 surveyQuestions = await response.Content.ReadAsAsync<List<SurveyQuestion>>();
             }
             return surveyQuestions;
+        }
+
+        public async Task<SurveyQuestionStats> GetSurveyQuestionStats(int surveyQuestionId)
+        {
+            string url = $"{Baseurl}/stats/{surveyQuestionId}";
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<SurveyQuestionStats>();
+            }
+            return null;
         }
     }
 }

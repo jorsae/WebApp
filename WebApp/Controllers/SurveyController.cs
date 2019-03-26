@@ -10,7 +10,7 @@ namespace WebApp.Controllers
 {
     public class SurveyController : Controller
     {
-        private SurveyQuestionApi surveyQuestionapi = new SurveyQuestionApi();
+        private SurveyQuestionApi surveyQuestionApi = new SurveyQuestionApi();
         private SurveyAnswerApi surveyAnswerApi = new SurveyAnswerApi();
         private SurveyApi surveyApi = new SurveyApi();
 
@@ -26,7 +26,7 @@ namespace WebApp.Controllers
         public async Task<ActionResult> AnswerSurvey(int surveyId)
         {
             Survey survey = await surveyApi.GetSurvey(surveyId);
-            List<SurveyQuestion> surveyQuestions = await surveyQuestionapi.GetSurveysQuestions(surveyId);
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveysQuestions(surveyId);
 
             ViewBag.surveyId = surveyQuestions.Count;
             ViewBag.surveyTitle = survey.SurveyTitle;
@@ -69,6 +69,13 @@ namespace WebApp.Controllers
         public async Task<ActionResult> Details(int id)
         {
             Survey survey = await surveyApi.GetSurvey(id);
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveysQuestions(id);
+            foreach(SurveyQuestion sq in surveyQuestions)
+            {
+                SurveyQuestionStats stats = await surveyQuestionApi.GetSurveyQuestionStats(id);
+                ViewBag.surveyQuestionStats += $"Question: {sq.QuestionNumber}: ";
+                ViewBag.surveyQuestionStats += stats + "<br />";
+            }
             return View(survey);
         }
 
