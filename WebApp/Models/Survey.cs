@@ -28,9 +28,17 @@ namespace WebApp.Models
 
         }
 
+        public bool IsActive()
+        {
+            if (ClosingDate >= DateTime.Now)
+                return true;
+            else
+                return false;
+        }
+
         public override string ToString()
         {
-            return $"SurveyId:{SurveyId}, SurveyTitle:{SurveyTitle}, CreationDate:{CreationDate}";
+            return $"SurveyId:{SurveyId}, SurveyTitle:{SurveyTitle}, CreationDate:{CreationDate}, ClosingDate:{ClosingDate}, IsActive:{IsActive()}";
         }
     }
 }

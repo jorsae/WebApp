@@ -76,6 +76,8 @@ namespace WebApp.Controllers
                 ViewBag.surveyQuestionStats += $"Question: {sq.QuestionNumber}: ";
                 ViewBag.surveyQuestionStats += stats + "<br />";
             }
+
+            ViewBag.surveyQuestionStats += "<br />" + survey;
             return View(survey);
         }
 
