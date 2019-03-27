@@ -10,10 +10,9 @@ namespace WebApp.Models
         public int SurveyId { get; set; }
         public string SurveyTitle { get; set; }
         public DateTime CreationDate { get; set; }
+        public DateTime ClosingDate { get; set; }
 
         public virtual ICollection<SurveyQuestion> SurveyQuestions { get; set; } = new List<SurveyQuestion>();
-
-        private static int NumberOfSurveys = 0;
 
         // Empty constructor for EntityFramework
         public Survey()
@@ -21,11 +20,12 @@ namespace WebApp.Models
 
         }
 
-        public Survey(string surveyTitle)
+        public Survey(string surveyTitle, DateTime? closingDate = null)
         {
+            ClosingDate = (closingDate == null) ? DateTime.Now.AddDays(7) : (DateTime)closingDate;
             SurveyTitle = surveyTitle;
-            SurveyId = NumberOfSurveys++;
             CreationDate = DateTime.Now;
+
         }
 
         public override string ToString()
