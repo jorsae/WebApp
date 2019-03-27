@@ -26,6 +26,7 @@ namespace WebApp.Controllers
         public async Task<ActionResult> AnswerSurvey(int surveyId)
         {
             Survey survey = await surveyApi.GetSurvey(surveyId);
+            ViewBag.surveyActivity = (survey.IsActive()) ? "Survey is active" : "Survey is no longer active";
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveysQuestions(surveyId);
 
             ViewBag.surveyId = surveyQuestions.Count;

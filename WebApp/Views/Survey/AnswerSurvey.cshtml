@@ -5,6 +5,7 @@
 
 <h2>@ViewBag.surveyTitle</h2>
 <h4>Survey id: @ViewBag.surveyId</h4>
+<h4>@ViewBag.surveyActivity</h4>
 
 @model List<SurveyQuestion>
 @using (Html.BeginForm("FinishSurvey", "Survey", FormMethod.Post))
