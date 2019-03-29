@@ -56,9 +56,16 @@ namespace WebApp.Controllers
                 ViewBag.answers += surveyAnswer + "<br />";
             }
 
+            // Testing adding survey to database with questions
+            Survey survey3 = new Survey("Survey Title");
+            SurveyQuestion question1 = new SurveyQuestion(1, "Test spørsmål 1");
+            SurveyQuestion question2 = new SurveyQuestion(2, "Test spørsmål 2");
+
+
             // <h4>All surveys</h4>
             List<Survey> surveys = await surveyApi.GetSurveys();
             return View(surveys);
+
         }
 
         [HttpPost]
