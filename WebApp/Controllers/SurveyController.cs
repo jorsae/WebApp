@@ -49,8 +49,8 @@ namespace WebApp.Controllers
                     bool answerParsed = int.TryParse(Request.Form[property], out answer);
                     if (questionParsed && answerParsed)
                     {
-                        bool insertedAnswer = await surveyAnswerApi.PutSurveyAnswer(questionId, answer);
-                        if(insertedAnswer)
+                        SurveyAnswer surveyAnswer = await surveyAnswerApi.PutSurveyAnswer(questionId, answer);
+                        if(surveyAnswer != null)
                             result += $"{property} answer saved <br />";
                         else
                             result += $"{property} failed to save answer <br />";
