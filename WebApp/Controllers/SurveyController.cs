@@ -93,9 +93,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
         {
-            bool createdSurvey = await surveyApi.PutSurvey(survey);
+            Survey createdSurvey = await surveyApi.PutSurvey(survey);
             // Survey was created successfully in database
-            if (createdSurvey)
+            if (createdSurvey != null)
             {
                 return View(survey);
             }

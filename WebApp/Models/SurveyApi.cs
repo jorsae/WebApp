@@ -36,13 +36,13 @@ namespace WebApp.Models
             return null;
         }
 
-        public async Task<bool> PutSurvey(Survey survey)
+        public async Task<Survey> PutSurvey(Survey survey)
         {
             HttpResponseMessage response = await client.PutAsJsonAsync<Survey>(Baseurl, survey);
             if (response.IsSuccessStatusCode)
-                return true;
+                return await response.Content.ReadAsAsync<Survey>();
             else
-                return false;
+                return null;
         }
 
         public async Task<bool> DeleteSurvey(int id)

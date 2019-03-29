@@ -33,5 +33,15 @@ namespace WebApp.Models
             }
             return null;
         }
+
+        public async Task<SurveyQuestion> PutSurveyQuestion(SurveyQuestion surveyQuestion)
+        {
+            HttpResponseMessage response = await client.PutAsJsonAsync<SurveyQuestion>(Baseurl, surveyQuestion);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<SurveyQuestion>();
+            }
+            return null;
+        }
     }
 }
