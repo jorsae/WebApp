@@ -56,6 +56,23 @@ namespace WebApp.Controllers
                 ViewBag.answers += surveyAnswer + "<br />";
             }
 
+            // Testing adding survey to database with questions
+            Survey survey1 = new Survey("Survey Title");
+            Survey surveyDB = await surveyApi.PutSurvey(survey1);
+            if(surveyDB != null)
+            {
+                SurveyQuestion question1 = new SurveyQuestion(surveyDB.SurveyId, 1, "Test spørsmål 1");
+                SurveyQuestion question2 = new SurveyQuestion(surveyDB.SurveyId, 2, "Test spørsmål 2");
+                
+                Task<SurveyQuestion> q1 = surveyQuestionApi.PutSurveyQuestion(question1);
+                Task<SurveyQuestion> q2 = surveyQuestionApi.PutSurveyQuestion(question2);
+                await Task.WhenAll(q1, q2);
+                if(q1 != null && q2 != null)
+                {
+                    ViewBag.answers += "<br />< br />ALL GOOD";
+                }
+            }
+
             // <h4>All surveys</h4>
             List<Survey> surveys = await surveyApi.GetSurveys();
             return View(surveys);

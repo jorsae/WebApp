@@ -12,16 +12,14 @@ namespace WebApp.Models
 
         public virtual List<SurveyAnswer> SurveyAnswers { get; set; } = new List<SurveyAnswer>();
 
-        private static int NumberOfSurveyQuestions = 0;
-
         public SurveyQuestion()
         {
 
         }
 
-        public SurveyQuestion(int questionNumber, string question)
+        public SurveyQuestion(int surveyId, int questionNumber, string question)
         {
-            SurveyQuestionId = NumberOfSurveyQuestions++;
+            SurveyId = surveyId;
             QuestionNumber = questionNumber;
             Question = question;
         }
