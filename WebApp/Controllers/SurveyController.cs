@@ -70,10 +70,10 @@ namespace WebApp.Controllers
         public async Task<ActionResult> Details(int id)
         {
             Survey survey = await surveyApi.GetSurvey(id);
-            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveysQuestions(id);
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveysQuestions(survey.SurveyId);
             foreach(SurveyQuestion sq in surveyQuestions)
             {
-                SurveyQuestionStats stats = await surveyQuestionApi.GetSurveyQuestionStats(id);
+                SurveyQuestionStats stats = await surveyQuestionApi.GetSurveyQuestionStats(sq.SurveyQuestionId);
                 ViewBag.surveyQuestionStats += $"Question: {sq.QuestionNumber}: ";
                 ViewBag.surveyQuestionStats += stats + "<br />";
             }

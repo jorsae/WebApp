@@ -27,6 +27,7 @@ namespace WebApp.Models
         {
             string url = $"{Baseurl}/stats/{surveyQuestionId}";
             HttpResponseMessage response = await client.GetAsync(url);
+            Debug.WriteLine($"GetSurveyQuestionStats: {surveyQuestionId}");
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadAsAsync<SurveyQuestionStats>();
