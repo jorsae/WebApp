@@ -30,6 +30,7 @@
                 @Html.DisplayFor(modelItem => item.CreationDate)
             </td>
             <td>
+                @Html.ActionLink("Add Question", "SurveyQuestions", new { id = item.SurveyId }) |
                 @Html.ActionLink("Edit", "Edit", new { id = item.SurveyId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.SurveyId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.SurveyId })
