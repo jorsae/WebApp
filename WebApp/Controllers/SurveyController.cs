@@ -27,7 +27,7 @@ namespace WebApp.Controllers
         {
             Survey survey = await surveyApi.GetSurvey(surveyId);
             ViewBag.surveyActivity = (survey.IsActive()) ? "Survey is active" : "Survey is no longer active";
-            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveysQuestions(surveyId);
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(surveyId);
 
             ViewBag.surveyId = surveyQuestions.Count;
             ViewBag.surveyTitle = survey.SurveyTitle;
@@ -66,11 +66,11 @@ namespace WebApp.Controllers
             return View();
         }
 
-        // GET: Surveys/Details/5
+        // GET: Survey/Details/5
         public async Task<ActionResult> Details(int id)
         {
             Survey survey = await surveyApi.GetSurvey(id);
-            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveysQuestions(survey.SurveyId);
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
             foreach(SurveyQuestion sq in surveyQuestions)
             {
                 SurveyQuestionStats stats = await surveyQuestionApi.GetSurveyQuestionStats(sq.SurveyQuestionId);
@@ -82,13 +82,13 @@ namespace WebApp.Controllers
             return View(survey);
         }
 
-        // GET: Surveys/Create
+        // GET: Survey/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Surveys/Create
+        // POST: Survey/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
@@ -106,7 +106,7 @@ namespace WebApp.Controllers
             }
         }
 
-        // GET: Surveys/Edit/5
+        // GET: Survey/Edit/5
         public ActionResult Edit(int? id)
         {
             /*
@@ -123,7 +123,7 @@ namespace WebApp.Controllers
             return View();
         }
 
-        // POST: Surveys/Edit/5
+        // POST: Survey/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
@@ -138,7 +138,7 @@ namespace WebApp.Controllers
             return View(survey);
         }
 
-        // GET: Surveys/Delete/5
+        // GET: Survey/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
             Debug.WriteLine(id);
@@ -155,7 +155,7 @@ namespace WebApp.Controllers
             return View(survey);
         }
 
-        // POST: Surveys/Delete/5
+        // POST: Survey/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
@@ -171,6 +171,38 @@ namespace WebApp.Controllers
             {
                 Console.WriteLine("Did not delete survey");
                 return RedirectToAction("Index");
+            }
+        }
+
+        // GET: Survey/SurveyQuestions
+        public async Task<ActionResult> SurveyQuestions()
+        {
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(2);
+
+            return View();
+        }
+
+        // GET: Survey/CreateSurveyQuestion
+        public ActionResult CreateSurveyQuestion()
+        {
+            return View();
+        }
+
+        // POST: Survey/CreateSurveyQuestion
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateSurveyQuestion([Bind(Include = "Id,SurveyTitle,DateCreated")] SurveyQuestion surveyQuestion)
+        {
+            SurveyQuestion createdSurveyQuestion = await surveyQuestionApi.PutSurveyQuestion(surveyQuestion);
+            // Survey was created successfully in database
+            if (createdSurveyQuestion != null)
+            {
+                return View(surveyQuestion);
+            }
+            // Failed to add survey to database
+            else
+            {
+                return View(surveyQuestion);
             }
         }
     }

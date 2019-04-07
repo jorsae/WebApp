@@ -209,6 +209,7 @@
     <Content Include="Views\SurveyQuestions\Details.cshtml" />
     <Content Include="Views\SurveyQuestions\Edit.cshtml" />
     <Content Include="Views\SurveyQuestions\Index.cshtml" />
+    <Content Include="Views\Survey\CreateSurveyQuestion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

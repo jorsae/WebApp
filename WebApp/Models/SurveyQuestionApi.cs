@@ -10,7 +10,7 @@ namespace WebApp.Models
         private HttpClient client = new HttpClient();
         private const string Baseurl = "https://bo19webapi.azurewebsites.net/api/surveyquestion";
 
-        public async Task<List<SurveyQuestion>> GetSurveysQuestions(int surveyId)
+        public async Task<List<SurveyQuestion>> GetSurveyQuestions(int surveyId)
         {
             List<SurveyQuestion> surveyQuestions = new List<SurveyQuestion>();
 

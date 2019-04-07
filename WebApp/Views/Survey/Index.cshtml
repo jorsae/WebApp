@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<WebApp.Models.Survey>
 
 @{
-    ViewBag.Title = "Surveys Overview";
+    ViewBag.Title = "Survey Overview";
 }
 
 <h2>Survey Overview</h2>
@@ -17,7 +17,6 @@
         <th>
             @Html.DisplayNameFor(model => model.CreationDate)
         </th>
-        <th></th>
     </tr>
 
     @foreach (var item in Model)
@@ -37,5 +36,4 @@
             </td>
         </tr>
     }
-
 </table>
