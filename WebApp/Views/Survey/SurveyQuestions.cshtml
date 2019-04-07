@@ -22,5 +22,19 @@
         </th>
     </tr>
 
-    
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurveyId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Question)
+            </td>
+        </tr>
+    }
+
 </table>

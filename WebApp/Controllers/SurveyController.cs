@@ -178,14 +178,22 @@ namespace WebApp.Controllers
         public async Task<ActionResult> SurveyQuestions(int id)
         {
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(id);
+            Debug.WriteLine(surveyQuestions.Count);
+            foreach(SurveyQuestion sq in surveyQuestions)
+            {
+                Debug.WriteLine($"Found survey: {sq}");
+            }
 
-            return View();
+            return View(surveyQuestions);
         }
 
         // GET: Survey/CreateSurveyQuestion
-        public ActionResult CreateSurveyQuestion()
+        public async Task<ActionResult> CreateSurveyQuestion()
         {
-            return View();
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(1);
+            Debug.WriteLine(surveyQuestions.Count);
+
+            return View(surveyQuestions);
         }
 
         // POST: Survey/CreateSurveyQuestion
