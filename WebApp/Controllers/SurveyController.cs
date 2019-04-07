@@ -175,9 +175,9 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/SurveyQuestions
-        public async Task<ActionResult> SurveyQuestions()
+        public async Task<ActionResult> SurveyQuestions(int id)
         {
-            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(2);
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(id);
 
             return View();
         }
@@ -191,7 +191,7 @@ namespace WebApp.Controllers
         // POST: Survey/CreateSurveyQuestion
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateSurveyQuestion([Bind(Include = "Id,SurveyTitle,DateCreated")] SurveyQuestion surveyQuestion)
+        public async Task<ActionResult> CreateSurveyQuestion([Bind(Include = "Id,QuestionNumber,Question,SurveyId")] SurveyQuestion surveyQuestion)
         {
             SurveyQuestion createdSurveyQuestion = await surveyQuestionApi.PutSurveyQuestion(surveyQuestion);
             // Survey was created successfully in database
