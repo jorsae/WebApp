@@ -21,20 +21,21 @@
             @Html.DisplayNameFor(model => model.Question)
         </th>
     </tr>
-
-    @foreach (var item in Model)
+    @if (Model != null)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SurveyId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Question)
-            </td>
-        </tr>
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SurveyId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Question)
+                </td>
+            </tr>
+        }
     }
-
 </table>
