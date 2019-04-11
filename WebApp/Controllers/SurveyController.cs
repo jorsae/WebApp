@@ -216,6 +216,7 @@ namespace WebApp.Controllers
             // Failed to add surveyquestion to database
             else
             {
+                ViewBag.SurveyId = surveyQuestion.SurveyId;
                 return View(surveyQuestion);
             }
         }
