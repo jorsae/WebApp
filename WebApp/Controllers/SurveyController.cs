@@ -102,7 +102,8 @@ namespace WebApp.Controllers
             // Survey was created successfully in database
             if (createdSurvey != null)
             {
-                return View(survey);
+                Debug.WriteLine("createdSurveyId: " + createdSurvey.SurveyId);
+                return RedirectToAction("Edit", "Survey", new { id = createdSurvey.SurveyId} );
             }
             // Failed to add survey to database
             else
@@ -114,10 +115,16 @@ namespace WebApp.Controllers
         // GET: Survey/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            if (id == null)
+                return View(Tuple.Create<Survey, List<SurveyQuestion>>(null, null));
+
             Survey survey = await surveyApi.GetSurvey((int)id);
+            if(survey == null)
+                return View(Tuple.Create<Survey, List<SurveyQuestion>>(null, null));
+
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
-            Tuple<Survey, List<SurveyQuestion>> t = Tuple.Create(survey, surveyQuestions);
-            return View(t);
+
+            return View(Tuple.Create(survey, surveyQuestions));
         }
 
         // POST: Survey/Edit/5
@@ -125,6 +132,10 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
         {
+            if(survey == null)
+            {
+                return View();
+            }
             /*
             if (ModelState.IsValid)
             {
