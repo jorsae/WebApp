@@ -1,11 +1,17 @@
-﻿namespace WebApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebApp.Models
 {
     public class SurveyAnswer
     {
         public int SurveyAnswerId { get; set; }
+        [Required]
+        [Range(1, 10)]
         public int Answer { get; set; }
+
+        [ForeignKey("SurveyQuestion")]
         public int SurveyQuestionId { get; set; }
-        public SurveyQuestion SurveyQuestion { get; set; }
 
         public SurveyAnswer()
         {

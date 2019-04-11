@@ -71,6 +71,11 @@ namespace WebApp.Controllers
         {
             Survey survey = await surveyApi.GetSurvey(id);
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
+            if(surveyQuestions == null)
+            {
+                return View(survey);
+            }
+
             foreach(SurveyQuestion sq in surveyQuestions)
             {
                 SurveyQuestionStats stats = await surveyQuestionApi.GetSurveyQuestionStats(sq.SurveyQuestionId);
@@ -91,7 +96,7 @@ namespace WebApp.Controllers
         // POST: Survey/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
+        public async Task<ActionResult> Create([Bind(Include = "Id,SurveyTitle")] Survey survey)
         {
             Survey createdSurvey = await surveyApi.PutSurvey(survey);
             // Survey was created successfully in database
@@ -107,20 +112,12 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
-            /*
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Survey survey = db.Surveys.Find(id);
-            if (survey == null)
-            {
-                return HttpNotFound();
-            }
-            return View(survey);*/
-            return View();
+            Survey survey = await surveyApi.GetSurvey((int)id);
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
+            Tuple<Survey, List<SurveyQuestion>> t = Tuple.Create(survey, surveyQuestions);
+            return View(t);
         }
 
         // POST: Survey/Edit/5
@@ -178,21 +175,22 @@ namespace WebApp.Controllers
         public async Task<ActionResult> SurveyQuestions(int id)
         {
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(id);
-
             return View(surveyQuestions);
         }
 
         // GET: Survey/CreateSurveyQuestion
         public ActionResult CreateSurveyQuestion()
         {
+            Debug.WriteLine("GET: Survey/CreateSurveyQuestion");
             return View();
         }
 
         // POST: Survey/CreateSurveyQuestion
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateSurveyQuestion([Bind(Include = "Id,QuestionNumber,Question,SurveyId")] SurveyQuestion surveyQuestion)
         {
+            Debug.WriteLine("POST: Survey/CreateSurveyQuestion");
             SurveyQuestion createdSurveyQuestion = await surveyQuestionApi.PutSurveyQuestion(surveyQuestion);
             // Surveyquestion was created successfully in database
             if (createdSurveyQuestion != null)

@@ -1,4 +1,4 @@
-﻿@model WebApp.Models.Survey
+﻿@model Tuple<WebApp.Models.Survey, List<WebApp.Models.SurveyQuestion>>
 
 @{
     ViewBag.Title = "Edit";
@@ -15,21 +15,21 @@
         <h4>Survey</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.SurveyId)
+        @Html.HiddenFor(model => model.Item1.SurveyId)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SurveyTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Item1.SurveyTitle, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SurveyTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SurveyTitle, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Item1.SurveyTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Item1.SurveyTitle, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CreationDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Item1.ClosingDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CreationDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreationDate, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Item1.ClosingDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Item1.ClosingDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -40,6 +40,41 @@
         </div>
     </div>
 }
+
+<p>
+    @Html.ActionLink("Create New", "CreateSurveyQuestion")
+</p>
+<table class="table">
+    @if (Model.Item2 != null)
+    {
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Item2.First().SurveyId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item2.First().QuestionNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item2.First().Question)
+        </th>
+    </tr>
+        foreach (var item in Model.Item2)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SurveyId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Question)
+                </td>
+            </tr>
+        }
+    }
+</table>
+
 
 <div>
     @Html.ActionLink("Back to List", "Index")
