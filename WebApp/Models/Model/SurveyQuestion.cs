@@ -20,7 +20,7 @@ namespace WebApp.Models
 
         public SurveyQuestion()
         {
-            QuestionNumber = 1;
+            
         }
 
         public SurveyQuestion(int surveyId, int questionNumber, string question)

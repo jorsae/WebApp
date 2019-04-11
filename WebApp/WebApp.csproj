@@ -202,7 +202,6 @@
     <Content Include="Views\Survey\Delete.cshtml" />
     <Content Include="Views\Survey\Details.cshtml" />
     <Content Include="Views\Survey\Edit.cshtml" />
-    <Content Include="Views\Survey\SurveyQuestions.cshtml" />
     <Content Include="Views\Survey\CreateSurveyQuestion.cshtml" />
   </ItemGroup>
   <ItemGroup>
