@@ -194,12 +194,12 @@ namespace WebApp.Controllers
         public async Task<ActionResult> CreateSurveyQuestion([Bind(Include = "Id,QuestionNumber,Question,SurveyId")] SurveyQuestion surveyQuestion)
         {
             SurveyQuestion createdSurveyQuestion = await surveyQuestionApi.PutSurveyQuestion(surveyQuestion);
-            // Survey was created successfully in database
+            // Surveyquestion was created successfully in database
             if (createdSurveyQuestion != null)
             {
                 return View(surveyQuestion);
             }
-            // Failed to add survey to database
+            // Failed to add surveyquestion to database
             else
             {
                 return View(surveyQuestion);
