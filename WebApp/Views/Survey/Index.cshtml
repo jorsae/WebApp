@@ -17,22 +17,31 @@
         <th>
             @Html.DisplayNameFor(model => model.CreationDate)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClosingDate)
+        </th>
+        <th>
+            Actions
+        </th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SurveyTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.SurveyId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.SurveyId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.SurveyId })
-            </td>
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SurveyTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreationDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClosingDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.SurveyId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.SurveyId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.SurveyId })
+        </td>
+    </tr>
     }
 </table>

@@ -11,13 +11,17 @@ namespace WebApp.Models
         [Required]
         [MaxLength(64)]
         public string SurveyTitle { get; set; }
+
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime CreationDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime ClosingDate { get; set; }
         
         // Empty constructor for EntityFramework
         public Survey()
         {
+            CreationDate = DateTime.Now;
         }
 
         public Survey(DateTime? closingDate = null)

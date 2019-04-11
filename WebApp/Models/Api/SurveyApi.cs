@@ -40,6 +40,15 @@ namespace WebApp.Models
                 return null;
         }
 
+        public async Task<Survey> PostSurveyChange(Survey survey)
+        {
+            HttpResponseMessage response = await client.PostAsJsonAsync<Survey>(Baseurl, survey);
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadAsAsync<Survey>();
+            else
+                return null;
+        }
+
         public async Task<bool> DeleteSurvey(int id)
         {
             string url = $"{Baseurl}/{id}";
