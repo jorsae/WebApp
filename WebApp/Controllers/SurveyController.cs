@@ -190,23 +190,28 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/CreateSurveyQuestion
-        public ActionResult CreateSurveyQuestion()
+        public ActionResult CreateSurveyQuestion(Survey survey)
         {
-            Debug.WriteLine("GET: Survey/CreateSurveyQuestion");
+            Debug.WriteLine($"GET: Survey/CreateSurveyQuestion: {survey}");
+            ViewBag.SurveyId = survey.SurveyId;
             return View();
         }
 
         // POST: Survey/CreateSurveyQuestion
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateSurveyQuestion([Bind(Include = "Id,QuestionNumber,Question,SurveyId")] SurveyQuestion surveyQuestion)
+        public async Task<ActionResult> CreateSurveyQuestion([Bind(Include = "Question, SurveyId")] SurveyQuestion surveyQuestion)
         {
-            Debug.WriteLine("POST: Survey/CreateSurveyQuestion");
+            Debug.WriteLine($"POST: Survey/CreateSurveyQuestion");
+            surveyQuestion.QuestionNumber = 1;
+            Debug.WriteLine(surveyQuestion);
+
             SurveyQuestion createdSurveyQuestion = await surveyQuestionApi.PutSurveyQuestion(surveyQuestion);
+            Debug.WriteLine($"createdSurveyQuestion: {createdSurveyQuestion}");
             // Surveyquestion was created successfully in database
             if (createdSurveyQuestion != null)
             {
-                return View(surveyQuestion);
+                return RedirectToAction("Edit", "Survey", new { id = createdSurveyQuestion.SurveyId });
             }
             // Failed to add surveyquestion to database
             else
