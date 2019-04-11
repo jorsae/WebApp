@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models
@@ -13,7 +14,7 @@ namespace WebApp.Models
         [Required]
         public DateTime CreationDate { get; set; }
         public DateTime ClosingDate { get; set; }
-
+        
         // Empty constructor for EntityFramework
         public Survey()
         {

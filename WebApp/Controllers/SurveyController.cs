@@ -112,26 +112,18 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
-            /*
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Survey survey = db.Surveys.Find(id);
-            if (survey == null)
-            {
-                return HttpNotFound();
-            }
-            return View(survey);*/
-            return View();
+            Survey survey = await surveyApi.GetSurvey((int)id);
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
+            Tuple<Survey, List<SurveyQuestion>> t = Tuple.Create(survey, surveyQuestions);
+            return View(t);
         }
 
         // POST: Survey/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
         {
             /*
             if (ModelState.IsValid)
