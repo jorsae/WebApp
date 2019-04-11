@@ -182,7 +182,7 @@ namespace WebApp.Controllers
             }
         }
 
-        // GET: Survey/SurveyQuestions
+        // GET: Survey/SurveyQuestions/5
         public async Task<ActionResult> SurveyQuestions(int id)
         {
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(id);
