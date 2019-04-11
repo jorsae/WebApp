@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace WebApp.Models
 {
@@ -16,14 +13,12 @@ namespace WebApp.Models
         {
             string url = $"{Baseurl}/{surveyId}";
 
-            Survey survey = null;
-
             HttpResponseMessage response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                survey = await response.Content.ReadAsAsync<Survey>();
+                return await response.Content.ReadAsAsync<Survey>();
             }
-            return survey;
+            return null;
         }
 
         public async Task<List<Survey>> GetSurveys()
@@ -39,6 +34,15 @@ namespace WebApp.Models
         public async Task<Survey> PutSurvey(Survey survey)
         {
             HttpResponseMessage response = await client.PutAsJsonAsync<Survey>(Baseurl, survey);
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadAsAsync<Survey>();
+            else
+                return null;
+        }
+
+        public async Task<Survey> PostSurveyChange(Survey survey)
+        {
+            HttpResponseMessage response = await client.PostAsJsonAsync<Survey>(Baseurl, survey);
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadAsAsync<Survey>();
             else

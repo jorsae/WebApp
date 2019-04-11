@@ -10,17 +10,15 @@ namespace WebApp.Models
         private HttpClient client = new HttpClient();
         private const string Baseurl = "https://productionwebapi.azurewebsites.net/api/surveyquestion";
 
-        public async Task<List<SurveyQuestion>> GetSurveysQuestions(int surveyId)
+        public async Task<List<SurveyQuestion>> GetSurveyQuestions(int surveyId)
         {
-            List<SurveyQuestion> surveyQuestions = new List<SurveyQuestion>();
-
             string url = $"{Baseurl}/surveyId/{surveyId}";
             HttpResponseMessage response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                surveyQuestions = await response.Content.ReadAsAsync<List<SurveyQuestion>>();
+                return await response.Content.ReadAsAsync<List<SurveyQuestion>>();
             }
-            return surveyQuestions;
+            return null;
         }
 
         public async Task<SurveyQuestionStats> GetSurveyQuestionStats(int surveyQuestionId)

@@ -1,23 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models
 {
     public class Survey
     {
+        [Key]
         public int SurveyId { get; set; }
+        [Required]
+        [MaxLength(64)]
         public string SurveyTitle { get; set; }
+
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime CreationDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime ClosingDate { get; set; }
-
-        public virtual ICollection<SurveyQuestion> SurveyQuestions { get; set; } = new List<SurveyQuestion>();
-
+        
         // Empty constructor for EntityFramework
         public Survey()
         {
+            CreationDate = DateTime.Now;
+        }
 
+        public Survey(DateTime? closingDate = null)
+        {
+            ClosingDate = DateTime.Now.AddDays(7);
+            CreationDate = DateTime.Now;
         }
 
         public Survey(string surveyTitle, DateTime? closingDate = null)
