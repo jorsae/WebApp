@@ -123,7 +123,7 @@ namespace WebApp.Controllers
         // POST: Survey/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
+        public ActionResult Edit([Bind(Include = "Id,SurveyTitle,DateCreated")] Survey survey)
         {
             /*
             if (ModelState.IsValid)
