@@ -203,7 +203,6 @@ namespace WebApp.Controllers
         public async Task<ActionResult> CreateSurveyQuestion([Bind(Include = "Question, SurveyId")] SurveyQuestion surveyQuestion)
         {
             Debug.WriteLine($"POST: Survey/CreateSurveyQuestion");
-            surveyQuestion.QuestionNumber = 1;
             Debug.WriteLine(surveyQuestion);
 
             SurveyQuestion createdSurveyQuestion = await surveyQuestionApi.PutSurveyQuestion(surveyQuestion);
