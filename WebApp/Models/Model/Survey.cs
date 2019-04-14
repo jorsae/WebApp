@@ -48,6 +48,11 @@ namespace WebApp.Models
                 return false;
         }
 
+        public string GetSurveyAnswerUrl()
+        {
+            return $"https://bo19webapp.azurewebsites.net/Survey/AnswerSurvey?guid={SurveyGuid}";
+        }
+
         public override string ToString()
         {
             return $"SurveyId:{SurveyId}, SurveyTitle:{SurveyTitle}, CreationDate:{CreationDate}, ClosingDate:{ClosingDate}, IsActive:{IsActive()}";

@@ -87,6 +87,7 @@ namespace WebApp.Controllers
                 ViewBag.surveyQuestionStats += stats + "<br />";
             }
 
+            ViewBag.AnswerSurveyUrl = survey.GetSurveyAnswerUrl();
             ViewBag.surveyQuestionStats += "<br />" + survey;
             return View(survey);
         }
