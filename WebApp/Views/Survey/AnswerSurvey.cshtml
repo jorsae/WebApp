@@ -10,16 +10,19 @@
 @model List<SurveyQuestion>
 @using (Html.BeginForm("FinishSurvey", "Survey", FormMethod.Post))
 {
-    foreach (SurveyQuestion surveyQuestion in Model)
+    if(Model != null)
     {
-        <p>@surveyQuestion.QuestionNumber) @surveyQuestion.Question</p>
-        <input list="numbers" name="surveyQuestionId-@surveyQuestion.SurveyQuestionId" />
-        <datalist id="numbers">
-                @for(int i = 1; i <= 10; i++)
-                {
-                    <option value=@i>@i</option>
-                }
-        </datalist>
+        foreach (SurveyQuestion surveyQuestion in Model)
+        {
+            <p>@surveyQuestion.QuestionNumber) @surveyQuestion.Question</p>
+            <input list="numbers" name="surveyQuestionId-@surveyQuestion.SurveyQuestionId" />
+            <datalist id="numbers">
+                    @for(int i = 1; i <= 10; i++)
+                    {
+                        <option value=@i>@i</option>
+                    }
+            </datalist>
+        }
     }
     <input type="submit" value="go!" />
 }

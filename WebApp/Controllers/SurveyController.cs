@@ -23,11 +23,15 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> AnswerSurvey(int surveyId)
+        public async Task<ActionResult> AnswerSurvey(string guid)
         {
-            Survey survey = await surveyApi.GetSurvey(surveyId);
+            Survey survey = await surveyApi.GetSurveyByGuid(guid);
+            if(survey == null)
+            {
+                return View();
+            }
             ViewBag.surveyActivity = (survey.IsActive()) ? "Survey is active" : "Survey is no longer active";
-            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(surveyId);
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
 
             ViewBag.surveyId = surveyQuestions.Count;
             ViewBag.surveyTitle = survey.SurveyTitle;
@@ -69,7 +73,7 @@ namespace WebApp.Controllers
         // GET: Survey/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            Survey survey = await surveyApi.GetSurvey(id);
+            Survey survey = await surveyApi.GetSurveyById(id);
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
             if(surveyQuestions == null)
             {
@@ -117,7 +121,7 @@ namespace WebApp.Controllers
             if (id == null)
                 return View(new SurveyAndSurveyQuestions(null, null));
 
-            Survey survey = await surveyApi.GetSurvey((int)id);
+            Survey survey = await surveyApi.GetSurveyById((int)id);
             if(survey == null)
                 return View(new SurveyAndSurveyQuestions(null, null));
 
@@ -151,7 +155,7 @@ namespace WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Survey survey = await surveyApi.GetSurvey((int)id);
+            Survey survey = await surveyApi.GetSurveyById((int)id);
             Debug.WriteLine(survey);
             if (survey == null)
             {

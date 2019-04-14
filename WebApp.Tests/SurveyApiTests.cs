@@ -23,7 +23,7 @@ namespace WebApp.Tests
         [Test]
         public async Task Assert_get_survey_by_id()
         {
-            Survey survey = await surveyApi.GetSurvey(1);
+            Survey survey = await surveyApi.GetSurveyById(1);
             Assert.NotNull(survey);
         }
 
