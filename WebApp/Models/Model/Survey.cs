@@ -11,7 +11,8 @@ namespace WebApp.Models
         [Required]
         [MaxLength(64)]
         public string SurveyTitle { get; set; }
-
+        [Required]
+        public string SurveyGuid { get; set; }
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime CreationDate { get; set; }

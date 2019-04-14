@@ -21,6 +21,18 @@ namespace WebApp.Models
             return null;
         }
 
+        public async Task<Survey> GetSurveyByGuid(string guid)
+        {
+            string url = $"{Baseurl}/{guid}";
+
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<Survey>();
+            }
+            return null;
+        }
+
         public async Task<List<Survey>> GetSurveys()
         {
             HttpResponseMessage response = await client.GetAsync(Baseurl);
