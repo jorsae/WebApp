@@ -4,6 +4,8 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
+        // TODO: Make a default 404 page
+
 
         public ActionResult Index()
         {

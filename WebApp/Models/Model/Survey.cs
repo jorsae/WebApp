@@ -48,10 +48,9 @@ namespace WebApp.Models
                 return false;
         }
 
-        public string GetSurveyAnswerUrl()
-        {
-            return $"https://bo19webapp.azurewebsites.net/Survey/AnswerSurvey?guid={SurveyGuid}";
-        }
+        // TODO: This should be a relative path
+        public string GetSurveyAnswerUrl() =>
+            $"https://bo19webapp.azurewebsites.net/Survey/AnswerSurvey?guid={SurveyGuid}";
 
         public override string ToString()
         {

@@ -28,6 +28,7 @@ namespace WebApp.Controllers
             Survey survey = await surveyApi.GetSurveyByGuid(guid);
             if(survey == null)
             {
+                // TODO: AnswerSurvey, Make a better display (own page?) that a survey is no longer active?
                 return View();
             }
             ViewBag.surveyActivity = (survey.IsActive()) ? "Survey is active" : "Survey is no longer active";
@@ -42,6 +43,7 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> FinishSurvey(FormCollection collection)
         {
+            // TODO: Redo FinishSurvey, cause this is ugly af
             string prefix = "surveyQuestionId-";
             string result = "";
             foreach(string property in collection)
@@ -73,6 +75,8 @@ namespace WebApp.Controllers
         // GET: Survey/Details/5
         public async Task<ActionResult> Details(int id)
         {
+            // TODO: Display stats for a survey nicely
+            // TODO: Add a "duplicate" survey to remake a survey exactly like this.
             Survey survey = await surveyApi.GetSurveyById(id);
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
             if(surveyQuestions == null)
@@ -103,6 +107,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "SurveyTitle, ClosingDate")] Survey survey)
         {
+            // TODO: Display error message that survey was not added to database
             Survey createdSurvey = await surveyApi.PutSurvey(survey);
             // Survey was created successfully in database
             if (createdSurvey != null)
@@ -119,6 +124,7 @@ namespace WebApp.Controllers
         // GET: Survey/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            // TODO: Add a button to delete SurveyQuestion
             if (id == null)
                 return View(new SurveyAndSurveyQuestions(null, null));
 
