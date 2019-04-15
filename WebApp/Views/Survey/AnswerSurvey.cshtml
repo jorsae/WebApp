@@ -35,10 +35,8 @@ else
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(sq => sq.SurveyQuestions[i].SurveyQuestionId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(sa => sa.SurveyAnswers[i].SurveyQuestionId, new { htmlAttributes = new { @class = "form-control", @Value=Model.SurveyQuestions[i].SurveyQuestionId } })
-                        @Html.ValidationMessageFor(sa => sa.SurveyAnswers[i].SurveyQuestionId, "", new { @class = "text-danger" })
+                        @Html.EditorFor(sa => sa.SurveyAnswers[i].SurveyQuestionId, new { htmlAttributes = new { @class = "form-control", @Value=Model.SurveyQuestions[i].SurveyQuestionId, @type="hidden" } })
                     </div>
                 </div>
             }
