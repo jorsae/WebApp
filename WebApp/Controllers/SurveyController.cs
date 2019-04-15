@@ -25,50 +25,37 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> AnswerSurvey(string guid)
         {
+            if (String.IsNullOrEmpty(guid))
+            {
+                return View(new SurveySurveyQuestionSurveyAnswer(null, null, null));
+            }
+
             Survey survey = await surveyApi.GetSurveyByGuid(guid);
             if(survey == null)
             {
                 // TODO: AnswerSurvey, Make a better display (own page?) that a survey is no longer active?
-                return View();
+                return View(new SurveySurveyQuestionSurveyAnswer(null, null, null));
             }
-            ViewBag.surveyActivity = (survey.IsActive()) ? "Survey is active" : "Survey is no longer active";
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
+            List<SurveyAnswer> surveyAnswers = new List<SurveyAnswer>();
+            for (int i = 0; i < surveyQuestions.Count; i++)
+                surveyAnswers.Add(new SurveyAnswer());
 
-            ViewBag.surveyId = surveyQuestions.Count;
-            ViewBag.surveyTitle = survey.SurveyTitle;
-
-            return View(surveyQuestions);
+            return View(new SurveySurveyQuestionSurveyAnswer(survey, surveyQuestions, surveyAnswers));
         }
 
         [HttpPost]
-        public async Task<ActionResult> FinishSurvey(FormCollection collection)
+        public async Task<ActionResult> FinishSurvey([Bind(Include = "Answer,SurveyQuestionId")] List<SurveyAnswer> surveyAnswers)
         {
-            // TODO: Redo FinishSurvey, cause this is ugly af
-            string prefix = "surveyQuestionId-";
-            string result = "";
-            foreach(string property in collection)
+            // TODO: Display surveyAnswers got saved or not!
+            foreach(SurveyAnswer sa in surveyAnswers)
             {
-                if (property.Contains(prefix))
-                {
-                    int questionId, answer;
-                    bool questionParsed = int.TryParse(property.Replace(prefix, ""), out questionId);
-                    bool answerParsed = int.TryParse(Request.Form[property], out answer);
-                    if (questionParsed && answerParsed)
-                    {
-                        bool surveyAnswer = await surveyAnswerApi.PutSurveyAnswer(questionId, answer);
-                        if(surveyAnswer)
-                            result += $"{property} answer saved <br />";
-                        else
-                            result += $"{property} failed to save answer <br />";
-                    }
-                    else
-                    {
-                        result += $"{property} Something went wrong, could not get questionId and/or answer";
-                    }
-                }
+                Debug.WriteLine(sa);
+                if(await surveyAnswerApi.PutSurveyAnswer(sa))
+                    ViewBag.result += $"Saved {sa}<br />";
+                else
+                    ViewBag.result += $"Failed to save {sa}<br />";
             }
-
-            ViewBag.result = result;
             return View();
         }
 

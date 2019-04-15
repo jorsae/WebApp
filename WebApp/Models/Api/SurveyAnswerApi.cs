@@ -36,9 +36,22 @@ namespace WebApp.Models
             return null;
         }
 
+        // TODO: This is not used, delete?
         public async Task<bool> PutSurveyAnswer(int surveyQuestionId, int userAnswer)
         {
             SurveyAnswer answer = new SurveyAnswer(userAnswer, surveyQuestionId);
+
+            HttpResponseMessage response = await client.PutAsJsonAsync<SurveyAnswer>(Baseurl, answer);
+            if (response.IsSuccessStatusCode)
+                return true;
+            else
+                return false;
+        }
+
+        // TODO: This is now inconsistent with PutSurvey and PutSurveyQuestion as they return the object it got if reponse.IsSuccessStatusCode == true!
+        public async Task<bool> PutSurveyAnswer(SurveyAnswer surveyAnswer)
+        {
+            SurveyAnswer answer = new SurveyAnswer(surveyAnswer.Answer, surveyAnswer.SurveyQuestionId);
 
             HttpResponseMessage response = await client.PutAsJsonAsync<SurveyAnswer>(Baseurl, answer);
             if (response.IsSuccessStatusCode)
