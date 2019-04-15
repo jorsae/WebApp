@@ -29,6 +29,7 @@ else
                 <div class="form-group">
                     @Html.Label(Model.SurveyQuestions[i].Question, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
+                        <!-- TODO: Find a better way set min and max range -->
                         @Html.EditorFor(sa => sa.SurveyAnswers[i].Answer, new { htmlAttributes = new { @class = "form-control", type = "range", min = 1, max = 10 } })
                         @Html.ValidationMessageFor(sa => sa.SurveyAnswers[i].Answer, "", new { @class = "text-danger", type = "range", min = 1, max = 10 })
                     </div>
