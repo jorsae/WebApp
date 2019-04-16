@@ -6,7 +6,6 @@ namespace WebApp.Controllers
     {
         // TODO: Make a default 404 page
 
-
         public ActionResult Index()
         {
             return View();
