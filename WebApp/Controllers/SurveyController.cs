@@ -31,7 +31,7 @@ namespace WebApp.Controllers
             }
 
             Survey survey = await surveyApi.GetSurveyByGuid(guid);
-            if(survey == null)
+            if (survey == null)
             {
                 // TODO: AnswerSurvey, Make a better display (own page?) that a survey is no longer active?
                 return View(new SurveySurveyQuestionSurveyAnswer(null, null, null));
@@ -48,7 +48,7 @@ namespace WebApp.Controllers
         public async Task<ActionResult> FinishSurvey([Bind(Include = "Answer,SurveyQuestionId")] List<SurveyAnswer> surveyAnswers)
         {
             List<SurveyAnswer> answers = await surveyAnswerApi.PutSurveyAnswer(surveyAnswers);
-            if(answers == null)
+            if (answers == null)
             {
                 ViewBag.result = "Failed to save answers";
             }
@@ -67,12 +67,12 @@ namespace WebApp.Controllers
             // TODO: Add a "duplicate" survey to remake a survey exactly like this.
             Survey survey = await surveyApi.GetSurveyById(id);
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
-            if(surveyQuestions == null)
+            if (surveyQuestions == null)
             {
                 return View(survey);
             }
 
-            foreach(SurveyQuestion sq in surveyQuestions)
+            foreach (SurveyQuestion sq in surveyQuestions)
             {
                 SurveyQuestionStats stats = await surveyQuestionApi.GetSurveyQuestionStats(sq.SurveyQuestionId);
                 ViewBag.surveyQuestionStats += $"Question: {sq.QuestionNumber}: ";
@@ -100,7 +100,7 @@ namespace WebApp.Controllers
             // Survey was created successfully in database
             if (createdSurvey != null)
             {
-                return RedirectToAction("Edit", "Survey", new { id = createdSurvey.SurveyId} );
+                return RedirectToAction("Edit", "Survey", new { id = createdSurvey.SurveyId });
             }
             // Failed to add survey to database
             else
@@ -112,12 +112,11 @@ namespace WebApp.Controllers
         // GET: Survey/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
-            // TODO: Add a button to delete SurveyQuestion
             if (id == null)
                 return View(new SurveyAndSurveyQuestions(null, null));
 
             Survey survey = await surveyApi.GetSurveyById((int)id);
-            if(survey == null)
+            if (survey == null)
                 return View(new SurveyAndSurveyQuestions(null, null));
 
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
@@ -130,16 +129,36 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "SurveyId,SurveyTitle,ClosingDate")] Survey survey)
         {
-            if(survey == null)
+            if (survey == null)
                 return View();
             Survey newSurvey = await surveyApi.PostSurveyChange(survey);
             // Changes was unusuccesfull
-            if(newSurvey == null)
+            if (newSurvey == null)
             {
                 return View(new SurveyAndSurveyQuestions(survey, null));
             }
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
             return View(new SurveyAndSurveyQuestions(survey, surveyQuestions));
+        }
+
+        // POST: Survey/CreateSurveyQuestion
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteSurveyQuestion(int surveyQuestionId)
+        {
+            SurveyQuestion sq = await surveyQuestionApi.GetSurveyQuestion(surveyQuestionId);
+            bool deleted = await surveyQuestionApi.DeleteSurveyQuestion(surveyQuestionId);
+            Debug.WriteLine(sq);
+            if(deleted)
+            {
+                Debug.WriteLine("Deleted question");
+                return RedirectToActionPermanent("Edit", new { id = sq.SurveyId });
+            }
+            else
+            {
+                // TODO: Failed to delete SurveyQuestion
+                return RedirectToActionPermanent("Index");
+            }
         }
 
         // GET: Survey/Delete/5

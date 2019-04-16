@@ -23,6 +23,7 @@
 
     <div class="form-group">
         @Html.HiddenFor(model => model.SurveyId, new { htmlAttributes = new { @class = "form-control" } })
+        <!-- TODO: Improve this way of doing it -->
         <input type="hidden" name="SurveyId" id="SurveyId" value="@ViewBag.SurveyId" />
     </div>
 

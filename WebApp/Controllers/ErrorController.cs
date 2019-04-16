@@ -16,5 +16,7 @@ namespace WebApp.Controllers
             string redirectedUrl = $"{Request.Url.Scheme}://{Request.Url.Authority}{aspxerrorpath}";
             return View(model: redirectedUrl);
         }
+
+        // TODO: Add Error redirect for 5xx?
     }
 }

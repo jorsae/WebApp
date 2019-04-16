@@ -21,6 +21,16 @@ namespace WebApp.Models
             return null;
         }
 
+        public async Task<SurveyQuestion> GetSurveyQuestion(int surveyQuestionId)
+        {
+            string url = $"{Baseurl}/{surveyQuestionId}";
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadAsAsync<SurveyQuestion>();
+            else
+                return null;
+        }
+
         public async Task<SurveyQuestionStats> GetSurveyQuestionStats(int surveyQuestionId)
         {
             string url = $"{Baseurl}/stats/{surveyQuestionId}";
@@ -41,6 +51,16 @@ namespace WebApp.Models
                 return await response.Content.ReadAsAsync<SurveyQuestion>();
             }
             return null;
+        }
+
+        public async Task<bool> DeleteSurveyQuestion(int surveyQuestionId)
+        {
+            string url = $"{Baseurl}/{surveyQuestionId}";
+            HttpResponseMessage response = await client.DeleteAsync(url);
+            if (response.IsSuccessStatusCode)
+                return true;
+            else
+                return false;
         }
     }
 }
