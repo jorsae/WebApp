@@ -11,7 +11,7 @@ namespace WebApp.Models
 
         public async Task<Survey> GetSurveyById(int surveyId)
         {
-            string url = $"{Baseurl}/id/{surveyId}";
+            string url = $"{Baseurl}/{surveyId}";
 
             HttpResponseMessage response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)

@@ -47,16 +47,17 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> FinishSurvey([Bind(Include = "Answer,SurveyQuestionId")] List<SurveyAnswer> surveyAnswers)
         {
-            // TODO: Display surveyAnswers got saved or not!
-            foreach(SurveyAnswer sa in surveyAnswers)
+            List<SurveyAnswer> answers = await surveyAnswerApi.PutSurveyAnswer(surveyAnswers);
+            if(answers == null)
             {
-                Debug.WriteLine(sa);
-                if(await surveyAnswerApi.PutSurveyAnswer(sa))
-                    ViewBag.result += $"Saved {sa}<br />";
-                else
-                    ViewBag.result += $"Failed to save {sa}<br />";
+                ViewBag.result = "Failed to save answers";
             }
-            return View();
+            else
+            {
+                foreach (SurveyAnswer answer in answers)
+                    ViewBag.result += answer + "<br />";
+            }
+            return View(answers);
         }
 
         // GET: Survey/Details/5

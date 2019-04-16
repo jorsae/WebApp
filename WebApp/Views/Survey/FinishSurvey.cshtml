@@ -1,10 +1,8 @@
-﻿@{
+﻿@model List<WebApp.Models.SurveyAnswer>
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h2>Survey finished!</h2>
-<p>Thank you for participating.. blablabla cookie</p>
-
+<h4>Thank you for participating in the survey</h4>
 <!-- TODO: Make this look nicer-->
-
-@Html.Raw(ViewBag.result)
+@Html.Raw(@ViewBag.result)
