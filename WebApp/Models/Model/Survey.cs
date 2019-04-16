@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models
@@ -11,7 +10,8 @@ namespace WebApp.Models
         [Required]
         [MaxLength(64)]
         public string SurveyTitle { get; set; }
-
+        [Required]
+        public string SurveyGuid { get; set; }
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime CreationDate { get; set; }
@@ -22,12 +22,14 @@ namespace WebApp.Models
         public Survey()
         {
             CreationDate = DateTime.Now;
+            SurveyGuid = Guid.NewGuid().ToString();
         }
 
         public Survey(DateTime? closingDate = null)
         {
             ClosingDate = DateTime.Now.AddDays(7);
             CreationDate = DateTime.Now;
+            SurveyGuid = Guid.NewGuid().ToString();
         }
 
         public Survey(string surveyTitle, DateTime? closingDate = null)
@@ -35,7 +37,7 @@ namespace WebApp.Models
             ClosingDate = (closingDate == null) ? DateTime.Now.AddDays(7) : (DateTime)closingDate;
             SurveyTitle = surveyTitle;
             CreationDate = DateTime.Now;
-
+            SurveyGuid = Guid.NewGuid().ToString();
         }
 
         public bool IsActive()
@@ -45,6 +47,8 @@ namespace WebApp.Models
             else
                 return false;
         }
+
+        public string GetSurveyAnswerUrl() => $"/Survey/AnswerSurvey?guid={SurveyGuid}";
 
         public override string ToString()
         {

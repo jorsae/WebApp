@@ -10,33 +10,41 @@
     <h4>Survey</h4>
     <hr />
     <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.SurveyTitle)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.SurveyTitle)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.SurveyTitle)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.SurveyTitle)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.CreationDate)
-            </dt>
+        <dt>
+            Answer Survey url
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.CreationDate)
-            </dd>
+        <dd>
+            <a href="@ViewBag.AnswerSurveyUrl">@ViewBag.AnswerSurveyUrl</a>
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.ClosingDate)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.ClosingDate)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
 
-            <dd>
-                @Html.Raw(ViewBag.surveyQuestionStats)
-            </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ClosingDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClosingDate)
+        </dd>
+
+        <dd>
+            @Html.Raw(ViewBag.surveyQuestionStats)
+        </dd>
     </dl>
 </div>
 <p>

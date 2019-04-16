@@ -9,9 +9,21 @@ namespace WebApp.Models
         private HttpClient client = new HttpClient();
         private const string Baseurl = "https://productionwebapi.azurewebsites.net/api/survey";
 
-        public async Task<Survey> GetSurvey(int surveyId)
+        public async Task<Survey> GetSurveyById(int surveyId)
         {
             string url = $"{Baseurl}/{surveyId}";
+
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<Survey>();
+            }
+            return null;
+        }
+
+        public async Task<Survey> GetSurveyByGuid(string guid)
+        {
+            string url = $"{Baseurl}/{guid}";
 
             HttpResponseMessage response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)

@@ -23,66 +23,63 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> AnswerSurvey(int surveyId)
+        public async Task<ActionResult> AnswerSurvey(string guid)
         {
-            Survey survey = await surveyApi.GetSurvey(surveyId);
-            ViewBag.surveyActivity = (survey.IsActive()) ? "Survey is active" : "Survey is no longer active";
-            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(surveyId);
+            if (String.IsNullOrEmpty(guid))
+            {
+                return View(new SurveySurveyQuestionSurveyAnswer(null, null, null));
+            }
 
-            ViewBag.surveyId = surveyQuestions.Count;
-            ViewBag.surveyTitle = survey.SurveyTitle;
+            Survey survey = await surveyApi.GetSurveyByGuid(guid);
+            if (survey == null)
+            {
+                // TODO: AnswerSurvey, Make a better display (own page?) that a survey is no longer active?
+                return View(new SurveySurveyQuestionSurveyAnswer(null, null, null));
+            }
+            List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
+            List<SurveyAnswer> surveyAnswers = new List<SurveyAnswer>();
+            for (int i = 0; i < surveyQuestions.Count; i++)
+                surveyAnswers.Add(new SurveyAnswer());
 
-            return View(surveyQuestions);
+            return View(new SurveySurveyQuestionSurveyAnswer(survey, surveyQuestions, surveyAnswers));
         }
 
         [HttpPost]
-        public async Task<ActionResult> FinishSurvey(FormCollection collection)
+        public async Task<ActionResult> FinishSurvey([Bind(Include = "Answer,SurveyQuestionId")] List<SurveyAnswer> surveyAnswers)
         {
-            string prefix = "surveyQuestionId-";
-            string result = "";
-            foreach(string property in collection)
+            List<SurveyAnswer> answers = await surveyAnswerApi.PutSurveyAnswer(surveyAnswers);
+            if (answers == null)
             {
-                if (property.Contains(prefix))
-                {
-                    int questionId, answer;
-                    bool questionParsed = int.TryParse(property.Replace(prefix, ""), out questionId);
-                    bool answerParsed = int.TryParse(Request.Form[property], out answer);
-                    if (questionParsed && answerParsed)
-                    {
-                        bool surveyAnswer = await surveyAnswerApi.PutSurveyAnswer(questionId, answer);
-                        if(surveyAnswer)
-                            result += $"{property} answer saved <br />";
-                        else
-                            result += $"{property} failed to save answer <br />";
-                    }
-                    else
-                    {
-                        result += $"{property} Something went wrong, could not get questionId and/or answer";
-                    }
-                }
+                ViewBag.result = "Failed to save answers";
             }
-
-            ViewBag.result = result;
-            return View();
+            else
+            {
+                foreach (SurveyAnswer answer in answers)
+                    ViewBag.result += answer + "<br />";
+            }
+            return View(answers);
         }
 
         // GET: Survey/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            Survey survey = await surveyApi.GetSurvey(id);
+            // TODO: Display stats for a survey nicely
+            // TODO: Add a "duplicate" survey to remake a survey exactly like this.
+            Survey survey = await surveyApi.GetSurveyById(id);
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
-            if(surveyQuestions == null)
+            if (surveyQuestions == null)
             {
                 return View(survey);
             }
 
-            foreach(SurveyQuestion sq in surveyQuestions)
+            foreach (SurveyQuestion sq in surveyQuestions)
             {
                 SurveyQuestionStats stats = await surveyQuestionApi.GetSurveyQuestionStats(sq.SurveyQuestionId);
                 ViewBag.surveyQuestionStats += $"Question: {sq.QuestionNumber}: ";
                 ViewBag.surveyQuestionStats += stats + "<br />";
             }
 
+            ViewBag.AnswerSurveyUrl = survey.GetSurveyAnswerUrl();
             ViewBag.surveyQuestionStats += "<br />" + survey;
             return View(survey);
         }
@@ -98,11 +95,12 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "SurveyTitle, ClosingDate")] Survey survey)
         {
+            // TODO: Display error message that survey was not added to database
             Survey createdSurvey = await surveyApi.PutSurvey(survey);
             // Survey was created successfully in database
             if (createdSurvey != null)
             {
-                return RedirectToAction("Edit", "Survey", new { id = createdSurvey.SurveyId} );
+                return RedirectToAction("Edit", "Survey", new { id = createdSurvey.SurveyId });
             }
             // Failed to add survey to database
             else
@@ -117,8 +115,8 @@ namespace WebApp.Controllers
             if (id == null)
                 return View(new SurveyAndSurveyQuestions(null, null));
 
-            Survey survey = await surveyApi.GetSurvey((int)id);
-            if(survey == null)
+            Survey survey = await surveyApi.GetSurveyById((int)id);
+            if (survey == null)
                 return View(new SurveyAndSurveyQuestions(null, null));
 
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
@@ -131,16 +129,36 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "SurveyId,SurveyTitle,ClosingDate")] Survey survey)
         {
-            if(survey == null)
+            if (survey == null)
                 return View();
             Survey newSurvey = await surveyApi.PostSurveyChange(survey);
             // Changes was unusuccesfull
-            if(newSurvey == null)
+            if (newSurvey == null)
             {
                 return View(new SurveyAndSurveyQuestions(survey, null));
             }
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
             return View(new SurveyAndSurveyQuestions(survey, surveyQuestions));
+        }
+
+        // POST: Survey/CreateSurveyQuestion
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteSurveyQuestion(int surveyQuestionId)
+        {
+            SurveyQuestion sq = await surveyQuestionApi.GetSurveyQuestion(surveyQuestionId);
+            bool deleted = await surveyQuestionApi.DeleteSurveyQuestion(surveyQuestionId);
+            Debug.WriteLine(sq);
+            if(deleted)
+            {
+                Debug.WriteLine("Deleted question");
+                return RedirectToActionPermanent("Edit", new { id = sq.SurveyId });
+            }
+            else
+            {
+                // TODO: Failed to delete SurveyQuestion
+                return RedirectToActionPermanent("Index");
+            }
         }
 
         // GET: Survey/Delete/5
@@ -151,7 +169,7 @@ namespace WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Survey survey = await surveyApi.GetSurvey((int)id);
+            Survey survey = await surveyApi.GetSurveyById((int)id);
             Debug.WriteLine(survey);
             if (survey == null)
             {
@@ -191,10 +209,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateSurveyQuestion([Bind(Include = "Question,SurveyId")] SurveyQuestion surveyQuestion)
         {
-            surveyQuestion.QuestionNumber = 1;
-            Debug.WriteLine(surveyQuestion);
             SurveyQuestion createdSurveyQuestion = await surveyQuestionApi.PutSurveyQuestion(surveyQuestion);
-            Debug.WriteLine(createdSurveyQuestion);
             // Surveyquestion was created successfully in database
             if (createdSurveyQuestion != null)
             {

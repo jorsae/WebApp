@@ -1,25 +1,52 @@
-﻿@{
+﻿@model WebApp.Models.SurveySurveyQuestionSurveyAnswer
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using WebApp.Models
 
-<h2>@ViewBag.surveyTitle</h2>
-<h4>Survey id: @ViewBag.surveyId</h4>
-<h4>@ViewBag.surveyActivity</h4>
+@if (Model.Survey != null)
+{
+    <h2>@Model.Survey.SurveyTitle</h2>
+}
+else
+{
+    <h2>Opps, that survey does not exist!</h2>
+}
 
-@model List<SurveyQuestion>
 @using (Html.BeginForm("FinishSurvey", "Survey", FormMethod.Post))
 {
-    foreach (SurveyQuestion surveyQuestion in Model)
-    {
-        <p>@surveyQuestion.QuestionNumber) @surveyQuestion.Question</p>
-        <input list="numbers" name="surveyQuestionId-@surveyQuestion.SurveyQuestionId" />
-        <datalist id="numbers">
-                @for(int i = 1; i <= 10; i++)
-                {
-                    <option value=@i>@i</option>
-                }
-        </datalist>
-    }
-    <input type="submit" value="go!" />
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @if (Model.SurveyQuestions != null)
+        {
+            <h4>Survey Questions</h4>
+            <hr />
+            for (int i = 0; i < Model.SurveyQuestions.Count; i++)
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.Label(Model.SurveyQuestions[i].Question, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <!-- TODO: Find a better way set min and max range -->
+                        <!-- TODO: Display the currently selected number value -->
+                        @Html.EditorFor(sa => sa.SurveyAnswers[i].Answer, new { htmlAttributes = new { @class = "form-control", type = "range", min = 1, max = 10 } })
+                        @Html.ValidationMessageFor(sa => sa.SurveyAnswers[i].Answer, "", new { @class = "text-danger", type = "range", min = 1, max = 10 })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.EditorFor(sa => sa.SurveyAnswers[i].SurveyQuestionId, new { htmlAttributes = new { @class = "form-control", @Value=Model.SurveyQuestions[i].SurveyQuestionId, @type="hidden" } })
+                    </div>
+                </div>
+            }
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
 }

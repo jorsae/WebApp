@@ -50,28 +50,40 @@
     {
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.SurveyQuestions.First().SurveyId)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.SurveyQuestions.First().QuestionNumber)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.SurveyQuestions.First().Question)
         </th>
+        <th>
+            Delete
+        </th>
     </tr>
         foreach (var item in Model.SurveyQuestions)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SurveyId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.QuestionNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Question)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Question)
+            </td>
+            <td>
+                @using (Html.BeginForm("DeleteSurveyQuestion", "Survey", new { surveyQuestionId = item.SurveyQuestionId }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        @Html.EditorFor(modelItem => item.SurveyQuestionId, new { htmlAttributes = new { @class = "form-control", @type = "hidden" } })
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Delete question" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </td>
+        </tr>
         }
     }
 </table>
