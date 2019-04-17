@@ -17,6 +17,11 @@ namespace WebApp.Controllers
             return View(model: redirectedUrl);
         }
 
+        
         // TODO: Add Error redirect for 5xx?
+        public ActionResult Error500()
+        {
+            return View();
+        }
     }
 }
