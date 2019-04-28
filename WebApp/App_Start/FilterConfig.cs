@@ -7,7 +7,8 @@ namespace WebApp
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            // TODO: This commented away, makes server error redirect properly!
+            //filters.Add(new HandleErrorAttribute());
         }
     }
 }
