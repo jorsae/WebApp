@@ -19,9 +19,10 @@ namespace WebApp.Controllers
 
         
         // TODO: Add Error redirect for 5xx?
-        public ActionResult Error500(string a)
+        public ActionResult Error500(string aspxerrorpath)
         {
-            return View();
+            string redirectedUrl = $"{Request.Url.Scheme}://{Request.Url.Authority}{aspxerrorpath}";
+            return View(model: redirectedUrl);
         }
     }
 }
