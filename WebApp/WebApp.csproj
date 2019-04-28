@@ -206,6 +206,7 @@
     <Content Include="Views\Survey\Edit.cshtml" />
     <Content Include="Views\Survey\CreateSurveyQuestion.cshtml" />
     <Content Include="Views\Error\Error404.cshtml" />
+    <Content Include="Views\Error\Error500.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
