@@ -53,7 +53,12 @@
             <text>Only 3 SurveyQuestions allowed</text>
         }
     }
+    else
+    {
+        @Html.ActionLink("Create New question", "CreateSurveyQuestion", Model.Survey)
+    }
 </p>
+
 <table class="table">
     @if (Model.SurveyQuestions != null)
     {
