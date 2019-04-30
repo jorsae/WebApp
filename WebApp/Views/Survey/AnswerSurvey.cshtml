@@ -31,8 +31,8 @@ else
                     <div class="col-md-10">
                         <!-- TODO: Find a better way set min and max range -->
                         <!-- TODO: Display the currently selected number value -->
-                        @Html.EditorFor(sa => sa.SurveyAnswers[i].Answer, new { htmlAttributes = new { @class = "form-control", type = "range", min = 1, max = 10, oninput = "amount" + i + ".value=this.value" } })
-                        @Html.EditorFor(sa => sa.SurveyAnswers[i].SurveyQuestionId, new { htmlAttributes = new { @class = "col-md-10", @id = "amount" + i, @readonly = true, @Value=1 } })
+                        @Html.EditorFor(sa => sa.SurveyAnswers[i].Answer, new { htmlAttributes = new { @class = "form-control", type = "range", min = 1, max = 10, oninput = "amount" + i + ".value=this.value", @Value=5 } })
+                        @Html.EditorFor(sa => sa.SurveyAnswers[i].SurveyQuestionId, new { htmlAttributes = new { @class = "col-md-10", @id = "amount" + i, @readonly = true, @Value=5 } })
                         @Html.ValidationMessageFor(sa => sa.SurveyAnswers[i].Answer, "", new { @class = "text-danger", type = "range", min = 1, max = 10 })
                     </div>
                 </div>
