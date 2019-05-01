@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace WebApp
 {
@@ -7,7 +6,8 @@ namespace WebApp
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            // TODO: This commented away, makes server error redirect properly!
+            //filters.Add(new HandleErrorAttribute());
         }
     }
 }

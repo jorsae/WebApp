@@ -148,6 +148,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HelperClass\SurveyQuestionFrequency.cs" />
     <Compile Include="Models\HelperClass\SurveySurveyQuestionSurveyAnswer.cs" />
     <Compile Include="Models\Model\Survey.cs" />
     <Compile Include="Models\HelperClass\SurveyAndSurveyQuestions.cs" />
@@ -207,6 +208,7 @@
     <Content Include="Views\Survey\Edit.cshtml" />
     <Content Include="Views\Survey\CreateSurveyQuestion.cshtml" />
     <Content Include="Views\Error\Error404.cshtml" />
+    <Content Include="Views\Error\Error500.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
