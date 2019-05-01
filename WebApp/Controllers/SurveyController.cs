@@ -48,6 +48,11 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> FinishSurvey([Bind(Include = "Answer,SurveyQuestionId")] List<SurveyAnswer> surveyAnswers)
         {
+            foreach(SurveyAnswer answer in surveyAnswers)
+            {
+                Debug.WriteLine(answer);
+            }
+
             List<SurveyAnswer> answers = await surveyAnswerApi.PutSurveyAnswer(surveyAnswers);
             if (answers == null)
             {
@@ -90,7 +95,6 @@ namespace WebApp.Controllers
                 foreach(SurveyQuestionFrequency freq in frequencyStats)
                 {
                     ViewBag.SurveyQuestionStats += $"{freq}<br />";
-                    Debug.WriteLine(freq);
                 }
                 ViewBag.SurveyQuestionStats += "</blockquote>";
             }

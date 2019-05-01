@@ -33,16 +33,6 @@ namespace WebApp.Models
             return null;
         }
 
-        public async Task<SurveyAnswer> PutSurveyAnswer(SurveyAnswer surveyAnswer)
-        {
-            SurveyAnswer answer = new SurveyAnswer(surveyAnswer.Answer, surveyAnswer.SurveyQuestionId);
-            HttpResponseMessage response = await client.PutAsJsonAsync<SurveyAnswer>(Baseurl, answer);
-            if (response.IsSuccessStatusCode)
-                return await response.Content.ReadAsAsync<SurveyAnswer>();
-            else
-                return null;
-        }
-
         public async Task<List<SurveyAnswer>> PutSurveyAnswer(List<SurveyAnswer> surveyAnswers)
         {
             HttpResponseMessage response = await client.PutAsJsonAsync<List<SurveyAnswer>>(Baseurl, surveyAnswers);
