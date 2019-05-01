@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApp.Models;
+using WebApp.Models.HelperClass;
 
 namespace WebApp.Controllers
 {
@@ -63,9 +64,9 @@ namespace WebApp.Controllers
         // GET: Survey/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            // TODO: Display stats for a survey nicely
-            // TODO: Add a "duplicate" survey to remake a survey exactly like this.
             Survey survey = await surveyApi.GetSurveyById(id);
+            ViewBag.AnswerSurveyUrl = survey.GetSurveyAnswerUrl();
+            
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
             if (surveyQuestions == null)
             {
@@ -75,12 +76,25 @@ namespace WebApp.Controllers
             foreach (SurveyQuestion sq in surveyQuestions)
             {
                 SurveyQuestionStats stats = await surveyQuestionApi.GetSurveyQuestionStats(sq.SurveyQuestionId);
-                ViewBag.surveyQuestionStats += $"Question: {sq.QuestionNumber}: ";
-                ViewBag.surveyQuestionStats += stats + "<br />";
+                List<SurveyQuestionFrequency> frequencyStats = await surveyQuestionApi.GetSurveyQuestionFrequency(sq.SurveyQuestionId);
+                if (stats == null || frequencyStats == null)
+                {
+                    ViewBag.SurveyQuestionStats = "No replies to the survey yet";
+                    break;
+                }
+
+                ViewBag.SurveyQuestionStats += $"<b>[{sq.QuestionNumber}] {sq.Question}:</b>";
+
+                ViewBag.SurveyQuestionStats += $"<blockquote>Total answers: {stats.Count}<br />";
+                ViewBag.SurveyQuestionStats += $"Average result: {stats.Average}<br />";
+                foreach(SurveyQuestionFrequency freq in frequencyStats)
+                {
+                    ViewBag.SurveyQuestionStats += $"{freq}<br />";
+                    Debug.WriteLine(freq);
+                }
+                ViewBag.SurveyQuestionStats += "</blockquote>";
             }
 
-            ViewBag.AnswerSurveyUrl = survey.GetSurveyAnswerUrl();
-            ViewBag.surveyQuestionStats += "<br />" + survey;
             return View(survey);
         }
 

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using WebApp.Models.HelperClass;
 
 namespace WebApp.Models
 {
@@ -35,10 +36,20 @@ namespace WebApp.Models
         {
             string url = $"{Baseurl}/stats/{surveyQuestionId}";
             HttpResponseMessage response = await client.GetAsync(url);
-            Debug.WriteLine($"GetSurveyQuestionStats: {surveyQuestionId}");
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadAsAsync<SurveyQuestionStats>();
+            }
+            return null;
+        }
+
+        public async Task<List<SurveyQuestionFrequency>> GetSurveyQuestionFrequency(int surveyQuestionId)
+        {
+            string url = $"{Baseurl}/frequency/{surveyQuestionId}";
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<List<SurveyQuestionFrequency>>();
             }
             return null;
         }
