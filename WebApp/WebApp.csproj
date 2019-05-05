@@ -197,7 +197,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\AnswerTest.cshtml" />
     <Content Include="Views\Survey\Index.cshtml" />
     <Content Include="Views\Survey\AnswerSurvey.cshtml" />
     <Content Include="Views\Survey\FinishSurvey.cshtml" />
