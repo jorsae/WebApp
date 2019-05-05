@@ -8,6 +8,7 @@
         // Users can answer between MinimumAnswer and MaximumAnswer on SurveyQuestions
         public const int MinimumAnswer = 1;
         public const int MaximumAnswer = 10;
+        public const int DefaultAnswer = 5;
 
         public const string BaseurlWebApi = "https://bo19webapi.azurewebsites.net";
     }

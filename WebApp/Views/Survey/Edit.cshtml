@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Edit";
+
+    int maxQuestionsInSurvey = WebApp.Models.HelperClass.Settings.MaxQuestionsInSurvey;
 }
 
 <h2>Edit</h2>
@@ -44,13 +46,13 @@
 <p>
     @if (Model.SurveyQuestions != null)
     {
-        if (Model.SurveyQuestions.Count < 3)
+        if (Model.SurveyQuestions.Count < maxQuestionsInSurvey)
         {
             @Html.ActionLink("Create New Question", "CreateSurveyQuestion", Model.Survey)
         }
         else
         {
-            <text>Only 3 SurveyQuestions allowed</text>
+            <text>Only @maxQuestionsInSurvey SurveyQuestions allowed</text>
         }
     }
     else
