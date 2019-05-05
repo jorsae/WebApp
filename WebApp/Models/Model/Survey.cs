@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace WebApp.Models
 {
@@ -48,7 +49,10 @@ namespace WebApp.Models
                 return false;
         }
 
-        public string GetSurveyAnswerUrl() => $"/Survey/AnswerSurvey?guid={SurveyGuid}";
+        public string GetSurveyAnswerUrl() {
+            var request = HttpContext.Current.Request;
+            return $"{request.Url.Scheme}://{request.Url.Authority}/Survey/AnswerSurvey?guid={SurveyGuid}";
+        }
 
         public override string ToString()
         {
