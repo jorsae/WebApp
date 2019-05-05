@@ -52,13 +52,11 @@ namespace WebApp.Controllers
             List<SurveyAnswer> answers = await surveyAnswerApi.PutSurveyAnswer(surveyAnswers);
             if (answers == null)
             {
-                ViewBag.result = "Failed to save answers";
+                ViewBag.result = "Your answers were not saved, please try again later.";
             }
             else
-            {
-                foreach (SurveyAnswer answer in answers)
-                    ViewBag.result += answer + "<br />";
-            }
+                ViewBag.result = "Your answers were succesfully saved";
+
             return View(answers);
         }
 
@@ -124,12 +122,9 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Edit(int id)
         {
-            if (id == null)
-                return View(new SurveyAndSurveyQuestions(null, null));
-
-            Survey survey = await surveyApi.GetSurveyById((int)id);
+            Survey survey = await surveyApi.GetSurveyById(id);
             if (survey == null)
                 return View(new SurveyAndSurveyQuestions(null, null));
 
@@ -174,13 +169,9 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<ActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Survey survey = await surveyApi.GetSurveyById((int)id);
+            Survey survey = await surveyApi.GetSurveyById(id);
             if (survey == null)
             {
                 return HttpNotFound();
