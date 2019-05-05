@@ -3,7 +3,8 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     bool surveyActive = false;
-    if(Model.Survey != null)
+    bool hasQuestions = Model.SurveyQuestions != null;
+    if (Model.Survey != null)
     {
         surveyActive = Model.Survey.IsActive();
     }
@@ -35,7 +36,7 @@ else
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        @if (Model.SurveyQuestions != null)
+        @if (hasQuestions)
         {
             <h4>Survey Questions</h4>
             <hr />
@@ -60,9 +61,13 @@ else
 
             }
         }
+        else
+        {
+            <h4>This survey has no questions!</h4>
+        }
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @if (surveyActive)
+                @if (surveyActive && !hasQuestions)
                 {
                     <input type="submit" value="Submit" class="btn btn-default" />
                 }

@@ -34,14 +34,15 @@ namespace WebApp.Controllers
             Survey survey = await surveyApi.GetSurveyByGuid(guid);
             if (survey == null)
             {
-                // TODO: AnswerSurvey, Make a better display (own page?) that a survey is no longer active?
                 return View(new SurveySurveyQuestionSurveyAnswer(null, null, null));
             }
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
             List<SurveyAnswer> surveyAnswers = new List<SurveyAnswer>();
-            for (int i = 0; i < surveyQuestions.Count; i++)
-                surveyAnswers.Add(new SurveyAnswer());
-
+            if(surveyQuestions != null)
+            {
+                for (int i = 0; i < surveyQuestions.Count; i++)
+                    surveyAnswers.Add(new SurveyAnswer());
+            }
             return View(new SurveySurveyQuestionSurveyAnswer(survey, surveyQuestions, surveyAnswers));
         }
 
