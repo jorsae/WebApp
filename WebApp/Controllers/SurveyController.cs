@@ -83,7 +83,7 @@ namespace WebApp.Controllers
                     break;
                 }
 
-                ViewBag.SurveyQuestionStats += $"<b>[{sq.QuestionNumber}] {sq.Question}:</b>";
+                ViewBag.SurveyQuestionStats += $"<b>[{sq.QuestionNumber}] {sq.Question}</b>";
 
                 ViewBag.SurveyQuestionStats += $"<blockquote>Total answers: {stats.Count}<br />";
                 ViewBag.SurveyQuestionStats += $"Average result: {stats.Average}<br />";
