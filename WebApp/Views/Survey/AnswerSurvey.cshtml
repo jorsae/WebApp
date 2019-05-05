@@ -54,7 +54,7 @@ else
                     @Html.Label(Model.SurveyQuestions[i].Question, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(sa => sa.SurveyAnswers[i].Answer, new { htmlAttributes = new { @class = "form-control", type = "range", min = minimumAnswer, max = maximumAnswer, oninput = "amount" + i + ".value=this.value", @Value = defaultAnswer } })
-                        @Html.TextBoxFor(sa => sa.SurveyAnswers[i].SurveyQuestionId, new { @class = "col-md-10", @readonly = true, @id = "amount" + i, @Value = defaultAnswer, disabled = "disabled" })
+                        @Html.TextBoxFor(sa => sa.SurveyAnswers[i].SurveyQuestionId, new { @class = "form-control", @readonly = true, @id = "amount" + i, @Value = defaultAnswer, disabled = "disabled" })
                         @Html.ValidationMessageFor(sa => sa.SurveyAnswers[i].Answer, "", new { @class = "text-danger", type = "range", min = minimumAnswer, max = maximumAnswer })
                     </div>
                 </div>
