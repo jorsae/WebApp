@@ -68,6 +68,17 @@ namespace WebApp.Models
                 return null;
         }
 
+        public async Task<bool> PostSurveyInactive(int id)
+        {
+            string url = $"{Baseurl}/inactive/{id}";
+            HttpResponseMessage response = await client.PostAsync(url, null);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<bool> DeleteSurvey(int id)
         {
             string url = $"{Baseurl}/{id}";

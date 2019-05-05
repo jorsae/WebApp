@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApp.Models;
@@ -149,6 +149,16 @@ namespace WebApp.Controllers
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
             return View(new SurveyAndSurveyQuestions(survey, surveyQuestions));
         }
+
+        // POST: Survey/Close/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CloseSurvey([Bind(Include = "SurveyId")] Survey survey)
+        {
+            await surveyApi.PostSurveyInactive(survey.SurveyId);
+            return RedirectToActionPermanent("Edit", new { id = survey.SurveyId });
+        }
+
 
         // POST: Survey/CreateSurveyQuestion
         [HttpPost]
