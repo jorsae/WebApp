@@ -148,6 +148,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HelperClass\Settings.cs" />
     <Compile Include="Models\HelperClass\SurveyQuestionFrequency.cs" />
     <Compile Include="Models\HelperClass\SurveySurveyQuestionSurveyAnswer.cs" />
     <Compile Include="Models\Model\Survey.cs" />
@@ -197,8 +198,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Result.cshtml" />
-    <Content Include="Views\Home\AnswerTest.cshtml" />
     <Content Include="Views\Survey\Index.cshtml" />
     <Content Include="Views\Survey\AnswerSurvey.cshtml" />
     <Content Include="Views\Survey\FinishSurvey.cshtml" />

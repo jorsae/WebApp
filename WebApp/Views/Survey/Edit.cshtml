@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Edit";
+
+    int maxQuestionsInSurvey = WebApp.Models.HelperClass.Settings.MaxQuestionsInSurvey;
 }
 
 <h2>Edit</h2>
@@ -18,7 +20,7 @@
         @Html.HiddenFor(model => model.Survey.SurveyId)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Survey.SurveyTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Survey Title", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Survey.SurveyTitle, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Survey.SurveyTitle, "", new { @class = "text-danger" })
@@ -26,10 +28,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Survey.ClosingDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Closing Date", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Survey.ClosingDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Survey.ClosingDate, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Survey.ClosingDate, "", new { @class = "text-danger", type = "datetime" })
             </div>
         </div>
 
@@ -41,16 +43,31 @@
     </div>
 }
 
+@using (Html.BeginForm("CloseSurvey", "Survey", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Survey.SurveyId)
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Close Survey" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
 <p>
     @if (Model.SurveyQuestions != null)
     {
-        if (Model.SurveyQuestions.Count < 3)
+        if (Model.SurveyQuestions.Count < maxQuestionsInSurvey)
         {
             @Html.ActionLink("Create New Question", "CreateSurveyQuestion", Model.Survey)
         }
         else
         {
-            <text>Only 3 SurveyQuestions allowed</text>
+            <text>Only @maxQuestionsInSurvey SurveyQuestions allowed</text>
         }
     }
     else
@@ -62,42 +79,42 @@
 <table class="table">
     @if (Model.SurveyQuestions != null)
     {
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.SurveyQuestions.First().QuestionNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SurveyQuestions.First().Question)
-        </th>
-        <th>
-            Delete
-        </th>
-    </tr>
+        <tr>
+            <th>
+                @Html.DisplayName("Question Number")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SurveyQuestions.First().Question)
+            </th>
+            <th>
+                Delete
+            </th>
+        </tr>
         foreach (var item in Model.SurveyQuestions)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Question)
-            </td>
-            <td>
-                @using (Html.BeginForm("DeleteSurveyQuestion", "Survey", new { surveyQuestionId = item.SurveyQuestionId }, FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Question)
+                </td>
+                <td>
+                    @using (Html.BeginForm("DeleteSurveyQuestion", "Survey", new { surveyQuestionId = item.SurveyQuestionId }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
 
-                    <div class="form-horizontal">
-                        @Html.EditorFor(modelItem => item.SurveyQuestionId, new { htmlAttributes = new { @class = "form-control", @type = "hidden" } })
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Delete question" class="btn btn-default" />
+                        <div class="form-horizontal">
+                            @Html.EditorFor(modelItem => item.SurveyQuestionId, new { htmlAttributes = new { @class = "form-control", @type = "hidden" } })
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Delete question" class="btn btn-default" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </td>
-        </tr>
+                    }
+                </td>
+            </tr>
         }
     }
 </table>

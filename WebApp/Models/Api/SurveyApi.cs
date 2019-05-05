@@ -1,13 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using WebApp.Models.HelperClass;
 
 namespace WebApp.Models
 {
     public class SurveyApi
     {
         private HttpClient client = new HttpClient();
-        private const string Baseurl = "https://productionwebapi.azurewebsites.net/api/survey";
+        private const string Baseurl = "https://bo19webapi.azurewebsites.net/api/survey";
+
+        public SurveyApi()
+        {
+            Baseurl = $"{Settings.BaseurlWebApi}/api/survey";
+        }
 
         public async Task<Survey> GetSurveyById(int surveyId)
         {
@@ -59,6 +66,17 @@ namespace WebApp.Models
                 return await response.Content.ReadAsAsync<Survey>();
             else
                 return null;
+        }
+
+        public async Task<bool> PostSurveyInactive(int id)
+        {
+            string url = $"{Baseurl}/inactive/{id}";
+            HttpResponseMessage response = await client.PostAsync(url, null);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> DeleteSurvey(int id)

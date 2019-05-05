@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using WebApp.Models.HelperClass;
 
 namespace WebApp.Models
 {
     public class SurveyAnswerApi
     {
         private HttpClient client = new HttpClient();
-        private const string Baseurl = "https://productionwebapi.azurewebsites.net/api/surveyanswer";
+        private const string Baseurl = "https://bo19webapi.azurewebsites.net/api/surveyanswer";
 
         public async Task<SurveyAnswer> GetSurveyAnswer(int surveyAnswerId)
         {

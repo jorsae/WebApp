@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApp.Models;
@@ -23,6 +22,7 @@ namespace WebApp.Controllers
             return View(surveys);
         }
 
+        // GET: AnswerSurvey
         [HttpGet]
         public async Task<ActionResult> AnswerSurvey(string guid)
         {
@@ -34,35 +34,30 @@ namespace WebApp.Controllers
             Survey survey = await surveyApi.GetSurveyByGuid(guid);
             if (survey == null)
             {
-                // TODO: AnswerSurvey, Make a better display (own page?) that a survey is no longer active?
                 return View(new SurveySurveyQuestionSurveyAnswer(null, null, null));
             }
             List<SurveyQuestion> surveyQuestions = await surveyQuestionApi.GetSurveyQuestions(survey.SurveyId);
             List<SurveyAnswer> surveyAnswers = new List<SurveyAnswer>();
-            for (int i = 0; i < surveyQuestions.Count; i++)
-                surveyAnswers.Add(new SurveyAnswer());
-
+            if(surveyQuestions != null)
+            {
+                for (int i = 0; i < surveyQuestions.Count; i++)
+                    surveyAnswers.Add(new SurveyAnswer());
+            }
             return View(new SurveySurveyQuestionSurveyAnswer(survey, surveyQuestions, surveyAnswers));
         }
 
+        // POST: FinishSurvey
         [HttpPost]
         public async Task<ActionResult> FinishSurvey([Bind(Include = "Answer,SurveyQuestionId")] List<SurveyAnswer> surveyAnswers)
         {
-            foreach(SurveyAnswer answer in surveyAnswers)
-            {
-                Debug.WriteLine(answer);
-            }
-
             List<SurveyAnswer> answers = await surveyAnswerApi.PutSurveyAnswer(surveyAnswers);
             if (answers == null)
             {
-                ViewBag.result = "Failed to save answers";
+                ViewBag.result = "Your answers were not saved, please try again later.";
             }
             else
-            {
-                foreach (SurveyAnswer answer in answers)
-                    ViewBag.result += answer + "<br />";
-            }
+                ViewBag.result = "Your answers were succesfully saved";
+
             return View(answers);
         }
 
@@ -128,12 +123,9 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Edit(int id)
         {
-            if (id == null)
-                return View(new SurveyAndSurveyQuestions(null, null));
-
-            Survey survey = await surveyApi.GetSurveyById((int)id);
+            Survey survey = await surveyApi.GetSurveyById(id);
             if (survey == null)
                 return View(new SurveyAndSurveyQuestions(null, null));
 
@@ -159,6 +151,16 @@ namespace WebApp.Controllers
             return View(new SurveyAndSurveyQuestions(survey, surveyQuestions));
         }
 
+        // POST: Survey/Close/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CloseSurvey([Bind(Include = "SurveyId")] Survey survey)
+        {
+            await surveyApi.PostSurveyInactive(survey.SurveyId);
+            return RedirectToActionPermanent("Edit", new { id = survey.SurveyId });
+        }
+
+
         // POST: Survey/CreateSurveyQuestion
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -166,10 +168,8 @@ namespace WebApp.Controllers
         {
             SurveyQuestion sq = await surveyQuestionApi.GetSurveyQuestion(surveyQuestionId);
             bool deleted = await surveyQuestionApi.DeleteSurveyQuestion(surveyQuestionId);
-            Debug.WriteLine(sq);
             if(deleted)
             {
-                Debug.WriteLine("Deleted question");
                 return RedirectToActionPermanent("Edit", new { id = sq.SurveyId });
             }
             else
@@ -180,15 +180,9 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<ActionResult> Delete(int id)
         {
-            Debug.WriteLine(id);
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Survey survey = await surveyApi.GetSurveyById((int)id);
-            Debug.WriteLine(survey);
+            Survey survey = await surveyApi.GetSurveyById(id);
             if (survey == null)
             {
                 return HttpNotFound();
