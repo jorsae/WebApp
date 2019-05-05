@@ -148,6 +148,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HelperClass\Settings.cs" />
     <Compile Include="Models\HelperClass\SurveyQuestionFrequency.cs" />
     <Compile Include="Models\HelperClass\SurveySurveyQuestionSurveyAnswer.cs" />
     <Compile Include="Models\Model\Survey.cs" />

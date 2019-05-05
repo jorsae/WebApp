@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebApp.Models.HelperClass;
@@ -9,7 +9,12 @@ namespace WebApp.Models
     public class SurveyQuestionApi
     {
         private HttpClient client = new HttpClient();
-        private const string Baseurl = "https://bo19webapi.azurewebsites.net/api/surveyquestion";
+        private readonly string Baseurl = String.Empty;
+
+        public SurveyQuestionApi()
+        {
+            Baseurl = $"{Settings.BaseurlWebApi}/api/surveyquestion";
+        }
 
         public async Task<List<SurveyQuestion>> GetSurveyQuestions(int surveyId)
         {

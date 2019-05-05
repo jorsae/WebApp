@@ -48,11 +48,6 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> FinishSurvey([Bind(Include = "Answer,SurveyQuestionId")] List<SurveyAnswer> surveyAnswers)
         {
-            foreach(SurveyAnswer answer in surveyAnswers)
-            {
-                Debug.WriteLine(answer);
-            }
-
             List<SurveyAnswer> answers = await surveyAnswerApi.PutSurveyAnswer(surveyAnswers);
             if (answers == null)
             {
@@ -166,10 +161,8 @@ namespace WebApp.Controllers
         {
             SurveyQuestion sq = await surveyQuestionApi.GetSurveyQuestion(surveyQuestionId);
             bool deleted = await surveyQuestionApi.DeleteSurveyQuestion(surveyQuestionId);
-            Debug.WriteLine(sq);
             if(deleted)
             {
-                Debug.WriteLine("Deleted question");
                 return RedirectToActionPermanent("Edit", new { id = sq.SurveyId });
             }
             else
@@ -182,13 +175,11 @@ namespace WebApp.Controllers
         // GET: Survey/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
-            Debug.WriteLine(id);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Survey survey = await surveyApi.GetSurveyById((int)id);
-            Debug.WriteLine(survey);
             if (survey == null)
             {
                 return HttpNotFound();
