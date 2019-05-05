@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -23,6 +22,7 @@ namespace WebApp.Controllers
             return View(surveys);
         }
 
+        // GET: AnswerSurvey
         [HttpGet]
         public async Task<ActionResult> AnswerSurvey(string guid)
         {
@@ -45,6 +45,7 @@ namespace WebApp.Controllers
             return View(new SurveySurveyQuestionSurveyAnswer(survey, surveyQuestions, surveyAnswers));
         }
 
+        // POST: FinishSurvey
         [HttpPost]
         public async Task<ActionResult> FinishSurvey([Bind(Include = "Answer,SurveyQuestionId")] List<SurveyAnswer> surveyAnswers)
         {

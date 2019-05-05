@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WebApp.Models;
 
@@ -18,7 +15,6 @@ namespace WebApp.Tests
         {
             surveyApi = new SurveyApi();
         }
-
 
         [Test]
         public async Task Assert_get_survey_by_id()
