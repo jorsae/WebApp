@@ -9,7 +9,7 @@ namespace WebApp.Models
     public class SurveyApi
     {
         private HttpClient client = new HttpClient();
-        private const string Baseurl = "https://bo19webapi.azurewebsites.net/api/survey";
+        private readonly string Baseurl = String.Empty;
 
         public SurveyApi()
         {
