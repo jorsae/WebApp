@@ -12,11 +12,9 @@ namespace WebApp.Controllers
 
         public ActionResult Error404(string aspxerrorpath)
         {
-            // TODO: Make 404 page look better
             string redirectedUrl = $"{Request.Url.Scheme}://{Request.Url.Authority}{aspxerrorpath}";
             return View(model: redirectedUrl);
         }
-
         
         public ActionResult Error500(string aspxerrorpath)
         {
