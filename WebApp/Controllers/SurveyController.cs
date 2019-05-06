@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApp.Models;
@@ -15,6 +14,7 @@ namespace WebApp.Controllers
         private SurveyApi surveyApi = new SurveyApi();
 
         // GET: Survey
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
             List<Survey> surveys = await surveyApi.GetSurveys();
@@ -62,6 +62,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/Details/5
+        [HttpGet]
         public async Task<ActionResult> Details(int id)
         {
             Survey survey = await surveyApi.GetSurveyById(id);
@@ -83,7 +84,7 @@ namespace WebApp.Controllers
                     break;
                 }
 
-                ViewBag.SurveyQuestionStats += $"<b>[{sq.QuestionNumber}] {sq.Question}:</b>";
+                ViewBag.SurveyQuestionStats += $"<b>[{sq.QuestionNumber}] {sq.Question}</b>";
 
                 ViewBag.SurveyQuestionStats += $"<blockquote>Total answers: {stats.Count}<br />";
                 ViewBag.SurveyQuestionStats += $"Average result: {stats.Average}<br />";
@@ -98,6 +99,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/Create
+        [HttpGet]
         public ActionResult Create()
         {
             return View(new Survey(""));
@@ -108,7 +110,6 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "SurveyTitle, ClosingDate")] Survey survey)
         {
-            // TODO: Display error message that survey was not added to database
             Survey createdSurvey = await surveyApi.PutSurvey(survey);
             // Survey was created successfully in database
             if (createdSurvey != null)
@@ -123,6 +124,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/Edit/5
+        [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
             Survey survey = await surveyApi.GetSurveyById(id);
@@ -174,12 +176,12 @@ namespace WebApp.Controllers
             }
             else
             {
-                // TODO: Failed to delete SurveyQuestion
                 return RedirectToActionPermanent("Index");
             }
         }
 
         // GET: Survey/Delete/5
+        [HttpGet]
         public async Task<ActionResult> Delete(int id)
         {
             Survey survey = await surveyApi.GetSurveyById(id);
@@ -210,6 +212,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Survey/CreateSurveyQuestion
+        [HttpGet]
         public ActionResult CreateSurveyQuestion(Survey survey)
         {
             ViewBag.SurveyId = survey.SurveyId;

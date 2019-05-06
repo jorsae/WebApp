@@ -6,7 +6,7 @@ namespace WebApp
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            // TODO: This commented away, makes server error redirect properly!
+            // Remove this comment, if you want to have the default redirect for 5xx errors
             //filters.Add(new HandleErrorAttribute());
         }
     }
